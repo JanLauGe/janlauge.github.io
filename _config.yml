@@ -1,1 +1,38 @@
-theme: jekyll-theme-minimal
+# Site settings
+title: Data Science Blog - JanLauGe
+description: 'A site with code and thoughts about data'
+url: 'http://janlauge.github.io'
+baseurl: '/jekyll-uno/'
+# google_analytics: 'UA-XXXXXX-X'
+# disqus_shortname: 'your-disqus-name'
+
+author:
+  name: 'Laurens Geffert'
+  email: laurensgeffert@gmail.com
+  twitter_username: JanLauGe
+  github_username:  JanLauGe
+  linkedin_username:  laurensgeffert
+
+defaults:
+  -
+    scope:
+      path: ''
+      type: 'posts'
+    values:
+        layout: 'post'
+
+# Build settings
+destination: _site
+paginate: 10
+permalink: /:year/:title/
+markdown: kramdown
+highlighter: rouge
+
+kramdown:
+  # use Github Flavored Markdown
+  input: GFM
+  # do not replace newlines by <br>s
+  hard_wrap: false
+
+gems: ['jekyll-paginate']
+exclude: ['README.md', 'Gemfile', 'Gemfile.lock', 'screenshot.png']
