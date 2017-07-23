@@ -2,12 +2,35 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Laurens Geffert</title>
-    <description>Personal webpage and blog - on all things data science and machine learning</description>
+    <description>Personal webpage and blog - on data science and machine learning</description>
     <link>http://janlauge.github.io//</link>
     <atom:link href="http://janlauge.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sat, 22 Jul 2017 15:46:05 +0100</pubDate>
-    <lastBuildDate>Sat, 22 Jul 2017 15:46:05 +0100</lastBuildDate>
+    <pubDate>Sun, 23 Jul 2017 02:11:25 +0100</pubDate>
+    <lastBuildDate>Sun, 23 Jul 2017 02:11:25 +0100</lastBuildDate>
     <generator>Jekyll v3.0.2</generator>
+    
+      <item>
+        <title>Test the format</title>
+        <description>&lt;p&gt;Let’s see if this works!?&lt;/p&gt;
+</description>
+        <pubDate>Sun, 23 Jul 2017 02:09:00 +0100</pubDate>
+        <link>http://janlauge.github.io//2017/test/</link>
+        <guid isPermaLink="true">http://janlauge.github.io//2017/test/</guid>
+        
+        <category>data science</category>
+        
+        <category>machine learning</category>
+        
+        <category>big data</category>
+        
+        
+        <category>data science</category>
+        
+        <category>machine learning</category>
+        
+        <category>big data</category>
+        
+      </item>
     
       <item>
         <title>Welcome to Jekyll!</title>
@@ -32,10 +55,18 @@
         <link>http://janlauge.github.io//2016/welcome-to-jekyll/</link>
         <guid isPermaLink="true">http://janlauge.github.io//2016/welcome-to-jekyll/</guid>
         
-        <category>jekyll</category>
+        <category>data science</category>
+        
+        <category>machine learning</category>
+        
+        <category>big data</category>
         
         
-        <category>jekyll</category>
+        <category>data science</category>
+        
+        <category>machine learning</category>
+        
+        <category>big data</category>
         
       </item>
     
