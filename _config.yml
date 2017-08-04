@@ -9,9 +9,11 @@ baseurl: '/'
 author:
   name: 'Laurens Geffert'
   email: laurensgeffert@gmail.com
-  twitter_username: JanLauGe
   github_username:  JanLauGe
+  twitter_username: JanLauGe
   linkedin_username:  laurensgeffert
+  stackoverflow_username: janlauge
+  googlescholar_username: _aqDDYYAAAAJ
 
 defaults:
   -
