@@ -1,40 +1,45 @@
-## Welcome to GitHub Pages
+# jekyll-uno
 
-SSH test
-SSH test 2
+Jekyll-Uno - a minimal, responsive theme for Jekyll based on the [Uno](https://github.com/daleanthony/Uno) theme for Ghost.
 
-You can use the [editor on GitHub](https://github.com/JanLauGe/janlauge.github.io/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+> :warning:
+  This theme requires ruby and rubygems installed
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+### Features
 
-### Markdown
+* Clean layout
+* Resposive layout
+* Pagination
+* Syntax highlighting
+* Social links
+* Tags listing page
+* Categories listing page
+* Google Analytics integration
+* Disqus integration
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+---
 
-```markdown
-Syntax highlighted code block
+### Install and Test
 
-# Header 1
-## Header 2
-### Header 3
+1. Download or clone repo `git clone git@github.com:joshgerdes/jekyll-uno.git`
+2. Enter the folder: `cd jekyll-uno/`
+3. If you don't have bundler installed: `gem install bundler`
+3. Install Ruby gems: `bundle install`
+4. Start Jekyll server: `bundle exec jekyll serve --watch`
 
-- Bulleted
-- List
+Access via: [http://localhost:4000/jekyll-uno/](http://localhost:4000/jekyll-uno/)
 
-1. Numbered
-2. List
+---
 
-**Bold** and _Italic_ and `Code` text
+### Demo and Download
 
-[Link](url) and ![Image](src)
-```
+[Demo](http://joshgerdes.com/jekyll-uno/)
+[Download](https://github.com/joshgerdes/jekyll-uno/archive/master.zip)
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+![jekyll-uno - free Jekyll theme](/screenshot.png)
 
-### Jekyll Themes
+---
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/JanLauGe/janlauge.github.io/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+### Copyright and license
 
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+It is under [the MIT license](/LICENSE).
