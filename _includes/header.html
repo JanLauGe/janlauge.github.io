@@ -2,7 +2,7 @@
   <i class="icon icon-list btn-mobile-menu__icon"></i>
   <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
 </span>
-  
+
 <header class="panel-cover" style="background-image: url({{ "images/cover.jpg" | prepend: site.baseurl }})">
   <div class="panel-main">
 
@@ -19,22 +19,22 @@
         <div class="navigation-wrapper">
 
           <nav class="cover-navigation cover-navigation--primary">
-		  
+
 		  <!-- Blog Button -->
 		  <ul class="navigation">
-			<li class="navigation__item"><a href="/blog" title="Blog posts" class="blog-button">Blog</a></li>
+			<li class="navigation__item"><a href="/index" title="Blog posts" class="blog-button">Blog</a></li>
 		  </ul>
-		  
+
 		  <!-- About Button -->
 		  <ul class="navigation">
 			<li class="navigation__item"><a href="/about" title="About the author" class="blog-button">About</a></li>
 		  </ul>
-                                        				  
+
           </nav>
 
           <nav class="cover-navigation navigation--social">
             <ul class="navigation">
-          
+
 		    {% if site.author.github_username %}
               <!-- GitHub -->
               <li class="navigation__item">
@@ -44,7 +44,7 @@
                 </a>
               </li>
             {% endif %}
-			
+
 			{% if site.author.twitter_username %}
               <!-- Twitter -->
               <li class="navigation__item">
@@ -54,7 +54,7 @@
                 </a>
               </li>
             {% endif %}
-			
+
             {% if site.author.linkedin_username %}
               <!-- LinkedIn -->
               <li class="navigation__item">
@@ -64,7 +64,7 @@
                 </a>
               </li>
             {% endif %}
-			
+
 			{% if site.author.stackoverflow_username %}
 			  <!-- Stackoverflow -->
 			  <li class="navigation__item">
@@ -74,7 +74,7 @@
 				</a>
 			  </li>
             {% endif %}
-        
+
 			{% if site.author.googlescholar_username %}
 			  <!-- Googlescholar -->
 			  <li class="navigation__item">
@@ -83,7 +83,7 @@
                   <span class="label">Google Scholar</span>
                 </a>
               </li>
-            {% endif %}	  
+            {% endif %}
 
             {% if site.author.facebook_username %}
               <!-- Facebook -->
@@ -112,7 +112,7 @@
                 <span class="label">RSS</span>
               </a>
             </li>
-          
+
             </ul>
           </nav>
 

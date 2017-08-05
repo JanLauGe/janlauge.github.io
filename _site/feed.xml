@@ -3,10 +3,10 @@
   <channel>
     <title>Laurens Geffert</title>
     <description>Personal webpage and blog - on data science and machine learning</description>
-    <link>http://janlauge.github.io//</link>
-    <atom:link href="http://janlauge.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sun, 23 Jul 2017 02:11:25 +0100</pubDate>
-    <lastBuildDate>Sun, 23 Jul 2017 02:11:25 +0100</lastBuildDate>
+    <link>http://janlauge.github.io/</link>
+    <atom:link href="http://janlauge.github.io/feed.xml" rel="self" type="application/rss+xml" />
+    <pubDate>Sat, 05 Aug 2017 13:57:28 +0100</pubDate>
+    <lastBuildDate>Sat, 05 Aug 2017 13:57:28 +0100</lastBuildDate>
     <generator>Jekyll v3.0.2</generator>
     
       <item>
@@ -14,8 +14,8 @@
         <description>&lt;p&gt;Let’s see if this works!?&lt;/p&gt;
 </description>
         <pubDate>Sun, 23 Jul 2017 02:09:00 +0100</pubDate>
-        <link>http://janlauge.github.io//2017/test/</link>
-        <guid isPermaLink="true">http://janlauge.github.io//2017/test/</guid>
+        <link>http://janlauge.github.io/2017/test/</link>
+        <guid isPermaLink="true">http://janlauge.github.io/2017/test/</guid>
         
         <category>data science</category>
         
@@ -51,9 +51,9 @@
 &lt;p&gt;Check out the &lt;a href=&quot;http://jekyllrb.com&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;. If you have questions, you can ask them on &lt;a href=&quot;https://github.com/jekyll/jekyll-help&quot;&gt;Jekyll’s dedicated Help repository&lt;/a&gt;.&lt;/p&gt;
 
 </description>
-        <pubDate>Fri, 08 Jan 2016 15:04:23 +0000</pubDate>
-        <link>http://janlauge.github.io//2016/welcome-to-jekyll/</link>
-        <guid isPermaLink="true">http://janlauge.github.io//2016/welcome-to-jekyll/</guid>
+        <pubDate>Sun, 01 Jan 2017 00:00:00 +0000</pubDate>
+        <link>http://janlauge.github.io/2017/welcome-to-jekyll/</link>
+        <guid isPermaLink="true">http://janlauge.github.io/2017/welcome-to-jekyll/</guid>
         
         <category>data science</category>
         
