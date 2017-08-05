@@ -3,10 +3,10 @@
   <channel>
     <title>Laurens Geffert</title>
     <description>Personal webpage and blog - on data science and machine learning</description>
-    <link>https://janlauge.github.io//</link>
-    <atom:link href="https://janlauge.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sat, 05 Aug 2017 22:34:16 +0100</pubDate>
-    <lastBuildDate>Sat, 05 Aug 2017 22:34:16 +0100</lastBuildDate>
+    <link>https://janlauge.github.iohttps://janlauge.github.io/</link>
+    <atom:link href="https://janlauge.github.iohttps://janlauge.github.io/feed.xml" rel="self" type="application/rss+xml" />
+    <pubDate>Sat, 05 Aug 2017 22:46:45 +0100</pubDate>
+    <lastBuildDate>Sat, 05 Aug 2017 22:46:45 +0100</lastBuildDate>
     <generator>Jekyll v3.0.2</generator>
     
       <item>
@@ -36,8 +36,8 @@ Test a code chunk, too!&lt;/p&gt;
 
 </description>
         <pubDate>Tue, 01 Aug 2017 01:00:00 +0100</pubDate>
-        <link>https://janlauge.github.io//2017/test2/</link>
-        <guid isPermaLink="true">https://janlauge.github.io//2017/test2/</guid>
+        <link>https://janlauge.github.iohttps://janlauge.github.io/2017/test2/</link>
+        <guid isPermaLink="true">https://janlauge.github.iohttps://janlauge.github.io/2017/test2/</guid>
         
         <category>data science</category>
         
@@ -59,8 +59,8 @@ Test a code chunk, too!&lt;/p&gt;
         <description>&lt;p&gt;Let’s see if this works!?&lt;/p&gt;
 </description>
         <pubDate>Tue, 01 Aug 2017 01:00:00 +0100</pubDate>
-        <link>https://janlauge.github.io//2017/test/</link>
-        <guid isPermaLink="true">https://janlauge.github.io//2017/test/</guid>
+        <link>https://janlauge.github.iohttps://janlauge.github.io/2017/test/</link>
+        <guid isPermaLink="true">https://janlauge.github.iohttps://janlauge.github.io/2017/test/</guid>
         
         <category>data science</category>
         
