@@ -5,12 +5,12 @@
     <description>Personal webpage and blog - on data science and machine learning</description>
     <link>https://janlauge.github.io//</link>
     <atom:link href="https://janlauge.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sat, 05 Aug 2017 21:23:22 +0100</pubDate>
-    <lastBuildDate>Sat, 05 Aug 2017 21:23:22 +0100</lastBuildDate>
+    <pubDate>Sat, 05 Aug 2017 22:34:16 +0100</pubDate>
+    <lastBuildDate>Sat, 05 Aug 2017 22:34:16 +0100</lastBuildDate>
     <generator>Jekyll v3.0.2</generator>
     
       <item>
-        <title>Test the format</title>
+        <title>Test the format 2</title>
         <description>&lt;p&gt;Let’s see if this works!?
 Test a code chunk, too!&lt;/p&gt;
 
