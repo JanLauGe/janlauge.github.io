@@ -5,7 +5,7 @@
     <url>
       <loc>http://janlauge.github.io/2017/test/</loc>
       
-        <lastmod>2017-07-23T03:09:00+01:00</lastmod>
+        <lastmod>2017-08-01T01:00:00+01:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -33,19 +33,6 @@
   
   
     
-    <url>
-      <loc>http://janlauge.github.io/about</loc>
-      
-        <lastmod>2017-08-04T18:00:00+01:00</lastmod>
-      
-      
-        <changefreq>monthly</changefreq>
-      
-      
-        <priority>0.3</priority>
-      
-    </url>
-    
   
     
   
@@ -53,7 +40,7 @@
     <url>
       <loc>http://janlauge.github.io/feed.xml</loc>
       
-        <lastmod>2017-08-05T14:11:22+01:00</lastmod>
+        <lastmod>2017-08-05T17:38:07+01:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -64,19 +51,6 @@
     </url>
     
   
-    
-    <url>
-      <loc>http://janlauge.github.io/</loc>
-      
-        <lastmod>2017-08-05T14:11:22+01:00</lastmod>
-      
-      
-        <changefreq>monthly</changefreq>
-      
-      
-        <priority>0.3</priority>
-      
-    </url>
     
   
     
