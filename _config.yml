@@ -3,7 +3,7 @@ title: Laurens Geffert
 description: 'Personal webpage and blog - on data science and machine learning'
 url: 'https://janlauge.github.io'
 baseurl: '/'
-google_analytics: 'UA-104096144-1'
+# google_analytics: 'UA-104096144-1'
 # disqus_shortname: 'your-disqus-name'
 
 author:
