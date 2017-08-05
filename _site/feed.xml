@@ -5,15 +5,15 @@
     <description>Personal webpage and blog - on data science and machine learning</description>
     <link>http://janlauge.github.io/</link>
     <atom:link href="http://janlauge.github.io/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sat, 05 Aug 2017 13:57:28 +0100</pubDate>
-    <lastBuildDate>Sat, 05 Aug 2017 13:57:28 +0100</lastBuildDate>
+    <pubDate>Sat, 05 Aug 2017 14:11:22 +0100</pubDate>
+    <lastBuildDate>Sat, 05 Aug 2017 14:11:22 +0100</lastBuildDate>
     <generator>Jekyll v3.0.2</generator>
     
       <item>
         <title>Test the format</title>
         <description>&lt;p&gt;Let’s see if this works!?&lt;/p&gt;
 </description>
-        <pubDate>Sun, 23 Jul 2017 02:09:00 +0100</pubDate>
+        <pubDate>Sun, 23 Jul 2017 03:09:00 +0100</pubDate>
         <link>http://janlauge.github.io/2017/test/</link>
         <guid isPermaLink="true">http://janlauge.github.io/2017/test/</guid>
         
@@ -55,18 +55,10 @@
         <link>http://janlauge.github.io/2017/welcome-to-jekyll/</link>
         <guid isPermaLink="true">http://janlauge.github.io/2017/welcome-to-jekyll/</guid>
         
-        <category>data science</category>
-        
-        <category>machine learning</category>
-        
-        <category>big data</category>
+        <category>jekyll</category>
         
         
-        <category>data science</category>
-        
-        <category>machine learning</category>
-        
-        <category>big data</category>
+        <category>jekyll</category>
         
       </item>
     
