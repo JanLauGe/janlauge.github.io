@@ -60,16 +60,20 @@ $$ minimize(\sum_{i = 1}^{E} f(x_i) * c) $$
 
 Constraints are grouped into three major categories:
 1. **capacity constraints:** Flow *f* through any given edge *x* can't be higher than the edge's capacity *c*.
-\$$ f(x) <= c $$
+
+$$f(x)<=c$$
 
 2. **node flow constraints:** All units in our problem should pass the network. We cannot retain any units in the network, and we cannot have flow out of a node without the equivalent flowing in to that node as well. Therefore, the sum of units flowing through incoming nodes *E(n)* into a node needs to be exactly equal to the sum of units flowing through outgoing nodes *E(o)* out of that node.
-\$$ \sum_{i\in E(n))} f(x_i) = \sum_{i\in E(o))} f(x_i) * -1 = 0 $$
+
+$$\sum_{i\in E(n))}f(x_i)=\sum_{i\in E(o))}f(x_i)*-1=0$$
+
 3. **initialisation constraints:** The node flow constraint is true for all except the source node *s* and the target node *t*. We are looking for a solution that pushes a fixed number of units from *s* through the network into *t*. Therefore, the sum of units flowing through the outgoing nodes *E(s)* out of *s* and the sum of units flowing through the incoming nodes *E(t)* into *t* needs to be exactly equal to that fixed number of units.
-\$$ \sum_{i\in E(s))} f(x_i) = \sum_{i\in E(t))} f(x_i) * -1 = total flow $$
+
+$$\sum_{i\in E(s))}f(x_i)=\sum_{i\in E(t))}f(x_i)*-1=total flow$$
 
 ### The Solution
-
 I have implemented all of that in the function below:
+
 ```r
 createConstraintsMatrix <- function(edges, total_flow) {
 
@@ -238,7 +242,6 @@ solution$solution
 ```
 
 ### Visualising the Output
-
 To finish off, we write the resulting solution back to the `igraph` object and visualise the flow in the optimal solution in a plot
 
 ```r
