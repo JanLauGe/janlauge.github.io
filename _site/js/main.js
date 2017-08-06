@@ -15,7 +15,7 @@ $(document).ready(function () {
     $('.panel-cover').addClass('panel-cover--collapsed')
   }
 
-  if (window.location.pathname !== 'https://janlauge.github.io' && window.location.pathname !== 'https://janlauge.github.ioindex.html') {
+  if (window.location.pathname !== 'https://janlauge.github.io/' && window.location.pathname !== 'https://janlauge.github.io/index.html') {
     $('.panel-cover').addClass('panel-cover--collapsed')
   }
 
