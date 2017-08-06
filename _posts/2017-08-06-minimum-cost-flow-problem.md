@@ -2,10 +2,13 @@
 layout: post
 title:  Minimum Cost Flow Problem in R
 date:   2017-08-06 09:30:00
+excerpt_separator: <!--more-->
 categories: [data science, optimization, graph theory, R]
 tags: [data science, optimization, graph theory, R]
 ---
 **In this post I create an R implementation for optimizing a "minimum cost flow problem" in R using graph theory and the lpSolve package. This can be useful for transportation and allocation applications in supply chain, logistics, and planning.**
+
+<!--more-->
 
 Recently I came across a business problem that I interpreted as a "minimum cost flow problem".
 
