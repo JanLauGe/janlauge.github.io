@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Minimum Cost Flow Problem in R
+title:  Minimum Cost Flow in R
 date:   2017-08-06 09:30:00
 excerpt_separator: <!--more-->
 categories: [data science, optimization, graph theory, R]
@@ -10,16 +10,13 @@ tags: [data-science, optimization, graph-theory, R]
 
 <!--more-->
 
-## Problem
+## The Problem
+Recently I came across a business problem that I interpreted as a "minimum cost flow problem". Accodring to Wikipedia it is optimization and decision problem to find the cheapest possible way of sending a certain amount of flow through a flow network. A typical application of this problem involves finding the best delivery route from a factory to a warehouse where the road network has some capacity and cost associated.
 
-Recently I came across a business problem that I interpreted as a "minimum cost flow problem". It is optimization and decision problem to find the cheapest possible way of sending a certain amount of flow through a flow network. A typical application of this problem involves finding the best delivery route from a factory to a warehouse where the road network has some capacity and cost associated. *-Wikipedia*
-
-I was hoping for a readily available implementation of an algorithm for this problem via an R-package, but my search on CRAN did not yield any results. So I turned to StackOverflow. You can find my [question here](https://stackoverflow.com/questions/43616480/minimum-cost-flow-network-optimization-in-r/). Ultimately, I ended up answering it myself. If this is useful for you, I'd appreciate your upvote :)
-
----------------------------------
+I was hoping for a readily available implementation of an algorithm for this problem via an R-package, but my search on CRAN did not yield any results. So I turned to StackOverflow. You can find my [question here](https://stackoverflow.com/questions/43616480/minimum-cost-flow-network-optimization-in-r/). Ultimately, I ended up answering it myself. If this is useful to you, I'd appreciate your upvote :)
 
 ## Example
-Let's start off by building an example graph for illustrating the problem. I used a manually created `edgelist`, defining a directional graph. Each edge has a *from* node and a *to* node, given as numeric ID, as well as a *capacity* (the maximum number of units that can pass through this connection), and a *cost* (the cost of passing a single unit through this connection). The edgelist data frame can be turned into a graph object using the `igraph` package and its `graph_from_edgelist` function.
+Let's start off by building an example graph for illustrating the problem. I used a manually created `edgelist`, defining a directional graph. Each edge has a `from` node and a `to` node, given as numeric ID, as well as a capacity *c* (the maximum number of units that can pass through this connection), and a cost *a* (the cost of passing a single unit through this connection). The edgelist data frame can be turned into a graph object using the `igraph` package and its `graph_from_edgelist` function.
 
 ```r
 library(tidyverse)
@@ -46,25 +43,27 @@ plot(g, edge.label = E(g)$cost)
 ```
 
 The result looks like this:
+
 ![network capacity]({{ site.url }}/assets/mincostflow_capacity.jpeg)
+
 ![network cost]({{ site.url }}/assets/mincostflow_cost.jpeg)
 
-Note that the example I chose only uses non-standard capacities in the edges coming out of node 1, and only uses non-zero cost values in the edges of the middle layer. I separated cost and capacity out like that to keep it simple for this example. In a real world application the values are likely more mixed, and there would probably be ==a lot== more edges.
+Note that the example I chose only uses non-standard capacities in the edges coming out of node 1, and only uses non-zero cost values in the edges of the middle layer. I separated cost and capacity out like that to keep it simple for this example. In a real world application the values are likely more mixed, and there would probably be a lot more edges.
 
-With our example graph we are now ready to formulate the objective function and the constraints of our optimization. Again, wikipedia is helpful
-Test of equation
+With our example graph we are now ready to formulate the objective function and the constraints of our optimization. I use the function below to generate the inputs for our solver. They consist of a left-hand side `lhs` (a vector of integers representing coefficients of the flow through each edge), a direction `dir` (<, ==, >), and a right-hand side `rhs` giving the numeric value that will need to be met by each constraint.
 
-$$
-\zeta(s) = \sum_{n=1}^\infty \frac{1}{n^s}
-$$
-
-I use the function below to generate the inputs for our solver. They consist of a left-hand side `lhs` (a vector of integers representing coefficients of the flow through each edge), a direction `dir` (<, ==, >), and a right-hand side `rhs` giving the numeric value that will need to be met by each constraint.
+Our objective is to minimize the total cost incurred, subject to the relevant constraints
+$$ minimize(\sum_{i = 1}^{E} f(x_i) * c) $$
 
 Constraints are grouped into three major categories:
-1. **capacity constraints:** Each node can only accommodate as much flow as it has capacity for. Simple!
-2. **node flow constraints:** All units in our problem should pass the network. We cannot retain any units in the network, and we cannot have flow out of a node without the equivalent flowing in to that node as well. Therefore, the sum of all units flowing into a node needs to be exactly equal to the sum of units flowing out of that node.
-3. **initialisation constraints:** The node flow constraint is true for all except the source node *s* and the target node *t*. We are looking for a solution that pushes a fixed number of units from *s* through the network into *t*. Therefore, the sum of units flowing out of *s* and the sum of units flowing into *t* needs to be exactly equal to that fixed number of units.
+1. **capacity constraints:** Flow *f* through any given edge *x* can't be higher than the edge's capacity *c*.
+$$ f(x) <= c $$
+2. **node flow constraints:** All units in our problem should pass the network. We cannot retain any units in the network, and we cannot have flow out of a node without the equivalent flowing in to that node as well. Therefore, the sum of units flowing through incoming nodes *E(n)* into a node needs to be exactly equal to the sum of units flowing through outgoing nodes *E(o)* out of that node.
+$$ \sum_{i\in E(n))} f(x_i) = \sum_{i\in E(o))} f(x_i) * -1 = 0 $$
+3. **initialisation constraints:** The node flow constraint is true for all except the source node *s* and the target node *t*. We are looking for a solution that pushes a fixed number of units from *s* through the network into *t*. Therefore, the sum of units flowing through the outgoing nodes *E(s)* out of *s* and the sum of units flowing through the incoming nodes *E(t)* into *t* needs to be exactly equal to that fixed number of units.
+$$ \sum_{i\in E(s))} f(x_i) = \sum_{i\in E(t))} f(x_i) * -1 = total flow $$
 
+I have implemented all of that in the function below:
 ```r
 createConstraintsMatrix <- function(edges, total_flow) {
 
@@ -172,10 +171,10 @@ createConstraintsMatrix <- function(edges, total_flow) {
   return(constraints)
 }
 
-constraintsMatrix <- createConstraintsMatrix(edges, 30)
+constraintsMatrix <- createConstraintsMatrix(edgelist, 30)
 ```
 
-This should return something like this:
+This should return something like this. We can see the rows corresponding to capacity constraints as lines with just a single 1 value in `lhs`, a `<=` in `dir`, and the capacity of the corresponding edge in the `rhs`. Node flow constraints show as one row per node, 1 for incoming nodes and -1 for outgoing nodes, `==` in `dir`, and zero in `rhs`. Finally, the initialisation constraints are implemented with negative coefficients for all edges leaving the source node and positive coefficients for all edges reaching the target node.
 
 ```r
 $lhs
@@ -215,7 +214,7 @@ $rhs
 [18]   0   0   0   0   0   0 -30  30
 ```
 
-We can now feed all of this information to `lpSolve` to calculate the optimal flow values of each edge.
+We can now feed all of this information to `lpSolve` to calculate the optimal flow values of each edge. Our example is relatively small, but because all values are integers it will compile relatively fast, even for much larger number of edges. I have successfully run a similar version of this code for a network with several thousands of edges in less than a minute on my laptop.
 
 ```r
 library(lpSolve)
@@ -223,7 +222,7 @@ library(lpSolve)
 # Run lpSolve to find best solution
 solution <- lp(
   direction = 'min',
-  objective.in = edges$cost,
+  objective.in = edgelist$cost,
   const.mat = constraintsMatrix$lhs,
   const.dir = constraintsMatrix$dir,
   const.rhs = constraintsMatrix$rhs)
@@ -248,6 +247,8 @@ E(g)$color[E(g)$cost >= 3] <- 'firebrick'
 plot(g, edge.width = E(g)$flow)
 ```
 
-![network flow]()
+![network flow]({{ site.url }}/assets/mincostflow_flow.jpeg)
 
 As you can see, the flow from node 1 is split between edges 1 and 2 because of the limiting capacity, even though this means that some of the flow will have to go from node 3 to node 6 at a higher cost. The expensive nodes are avoided all together and have zero flow.
+
+That's all for now, thanks for reading! I hope it is helpful for someone out there. If you have any comments, questions, or suggestions, please send me an email or tweet. Any feedback would be much appreciated.
