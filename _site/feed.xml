@@ -5,26 +5,23 @@
     <description>Personal webpage and blog - on data science and machine learning</description>
     <link>https://janlauge.github.iohttps://janlauge.github.io//</link>
     <atom:link href="https://janlauge.github.iohttps://janlauge.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sun, 06 Aug 2017 10:32:40 +0100</pubDate>
-    <lastBuildDate>Sun, 06 Aug 2017 10:32:40 +0100</lastBuildDate>
+    <pubDate>Sun, 06 Aug 2017 14:28:29 +0100</pubDate>
+    <lastBuildDate>Sun, 06 Aug 2017 14:28:29 +0100</lastBuildDate>
     <generator>Jekyll v3.0.2</generator>
     
       <item>
-        <title>Minimum Cost Flow Problem in R</title>
+        <title>Minimum Cost Flow</title>
         <description>&lt;p&gt;&lt;strong&gt;In this post I create an R implementation of optimizing a “minimum cost flow problem” in R using graph theory and the lpSolve package. This can be useful for transportation and allocation applications in supply chain, logistics, and planning.&lt;/strong&gt;&lt;/p&gt;
 
 &lt;!--more--&gt;
 
-&lt;h2 id=&quot;problem&quot;&gt;Problem&lt;/h2&gt;
+&lt;h3 id=&quot;the-problem&quot;&gt;The Problem&lt;/h3&gt;
+&lt;p&gt;Recently I came across a business problem that I interpreted as a “minimum cost flow problem”. Accodring to Wikipedia it is optimization and decision problem to find the cheapest possible way of sending a certain amount of flow through a flow network. A typical application of this problem involves finding the best delivery route from a factory to a warehouse where the road network has some capacity and cost associated.&lt;/p&gt;
 
-&lt;p&gt;Recently I came across a business problem that I interpreted as a “minimum cost flow problem”. It is optimization and decision problem to find the cheapest possible way of sending a certain amount of flow through a flow network. A typical application of this problem involves finding the best delivery route from a factory to a warehouse where the road network has some capacity and cost associated. &lt;em&gt;-Wikipedia&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;I was hoping for a readily available implementation of an algorithm for this problem via an R-package, but my search on CRAN did not yield any results. So I turned to StackOverflow. You can find my &lt;a href=&quot;https://stackoverflow.com/questions/43616480/minimum-cost-flow-network-optimization-in-r/&quot;&gt;question here&lt;/a&gt;. Ultimately, I ended up answering it myself. If this is useful to you, I’d appreciate your upvote :)&lt;/p&gt;
 
-&lt;p&gt;I was hoping for a readily available implementation of an algorithm for this problem via an R-package, but my search on CRAN did not yield any results. So I turned to StackOverflow. You can find my &lt;a href=&quot;https://stackoverflow.com/questions/43616480/minimum-cost-flow-network-optimization-in-r/&quot;&gt;question here&lt;/a&gt;. Ultimately, I ended up answering it myself. If this is useful for you, I’d appreciate your upvote :)&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h2 id=&quot;example&quot;&gt;Example&lt;/h2&gt;
-&lt;p&gt;Let’s start off by building an example graph for illustrating the problem. I used a manually created &lt;code class=&quot;highlighter-rouge&quot;&gt;edgelist&lt;/code&gt;, defining a directional graph. Each edge has a &lt;em&gt;from&lt;/em&gt; node and a &lt;em&gt;to&lt;/em&gt; node, given as numeric ID, as well as a &lt;em&gt;capacity&lt;/em&gt; (the maximum number of units that can pass through this connection), and a &lt;em&gt;cost&lt;/em&gt; (the cost of passing a single unit through this connection). The edgelist data frame can be turned into a graph object using the &lt;code class=&quot;highlighter-rouge&quot;&gt;igraph&lt;/code&gt; package and its &lt;code class=&quot;highlighter-rouge&quot;&gt;graph_from_edgelist&lt;/code&gt; function.&lt;/p&gt;
+&lt;h3 id=&quot;example&quot;&gt;Example&lt;/h3&gt;
+&lt;p&gt;Let’s start off by building an example graph for illustrating the problem. I used a manually created &lt;code class=&quot;highlighter-rouge&quot;&gt;edgelist&lt;/code&gt;, defining a directional graph. Each edge has a &lt;code class=&quot;highlighter-rouge&quot;&gt;from&lt;/code&gt; node and a &lt;code class=&quot;highlighter-rouge&quot;&gt;to&lt;/code&gt; node, given as numeric ID, as well as a capacity &lt;em&gt;c&lt;/em&gt; (the maximum number of units that can pass through this connection), and a cost &lt;em&gt;a&lt;/em&gt; (the cost of passing a single unit through this connection). The edgelist data frame can be turned into a graph object using the &lt;code class=&quot;highlighter-rouge&quot;&gt;igraph&lt;/code&gt; package and its &lt;code class=&quot;highlighter-rouge&quot;&gt;graph_from_edgelist&lt;/code&gt; function.&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tidyverse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;igraph&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
@@ -50,135 +47,146 @@
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;p&gt;The result looks like this:
-&lt;img src=&quot;https://janlauge.github.io/assets/mincostflow_capacity.jpeg&quot; alt=&quot;network capacity&quot; /&gt;
-&lt;img src=&quot;https://janlauge.github.io/assets/mincostflow_cost.jpeg&quot; alt=&quot;network cost&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;The result looks like this:&lt;/p&gt;
 
-&lt;p&gt;Note that the example I chose only uses non-standard capacities in the edges coming out of node 1, and only uses non-zero cost values in the edges of the middle layer. I separated cost and capacity out like that to keep it simple for this example. In a real world application the values are likely more mixed, and there would probably be ==a lot== more edges.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://janlauge.github.io/assets/mincostflow_capacity.jpeg&quot; alt=&quot;network capacity&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;With our example graph we are now ready to formulate the objective function and the constraints of our optimization. Again, wikipedia is helpful
-Test of equation&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://janlauge.github.io/assets/mincostflow_cost.jpeg&quot; alt=&quot;network cost&quot; /&gt;&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\zeta(s) = \sum_{n=1}^\infty \frac{1}{n^s}&lt;/script&gt;
+&lt;p&gt;Note that the example I chose only uses non-standard capacities in the edges coming out of node 1, and only uses non-zero cost values in the edges of the middle layer. I separated cost and capacity out like that to keep it simple for this example. In a real world application the values are likely more mixed, and there would probably be a lot more edges.&lt;/p&gt;
 
-&lt;p&gt;I use the function below to generate the inputs for our solver. They consist of a left-hand side &lt;code class=&quot;highlighter-rouge&quot;&gt;lhs&lt;/code&gt; (a vector of integers representing coefficients of the flow through each edge), a direction &lt;code class=&quot;highlighter-rouge&quot;&gt;dir&lt;/code&gt; (&amp;lt;, ==, &amp;gt;), and a right-hand side &lt;code class=&quot;highlighter-rouge&quot;&gt;rhs&lt;/code&gt; giving the numeric value that will need to be met by each constraint.&lt;/p&gt;
+&lt;hr /&gt;
+
+&lt;p&gt;With our example graph we are now ready to formulate the objective function and the constraints of our optimization. I use the function below to generate the inputs for our solver. They consist of a left-hand side &lt;code class=&quot;highlighter-rouge&quot;&gt;lhs&lt;/code&gt; (a vector of integers representing coefficients of the flow through each edge), a direction &lt;code class=&quot;highlighter-rouge&quot;&gt;dir&lt;/code&gt; (&amp;lt;, ==, &amp;gt;), and a right-hand side &lt;code class=&quot;highlighter-rouge&quot;&gt;rhs&lt;/code&gt; giving the numeric value that will need to be met by each constraint.&lt;/p&gt;
+
+&lt;p&gt;Our objective is to minimize the total cost incurred, subject to the relevant constraints&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;minimize(\sum_{i = 1}^{E} f(x_i) * c)&lt;/script&gt;
 
 &lt;p&gt;Constraints are grouped into three major categories:
-1. &lt;strong&gt;capacity constraints:&lt;/strong&gt; Each node can only accommodate as much flow as it has capacity for. Simple!
-2. &lt;strong&gt;node flow constraints:&lt;/strong&gt; All units in our problem should pass the network. We cannot retain any units in the network, and we cannot have flow out of a node without the equivalent flowing in to that node as well. Therefore, the sum of all units flowing into a node needs to be exactly equal to the sum of units flowing out of that node.
-3. &lt;strong&gt;initialisation constraints:&lt;/strong&gt; The node flow constraint is true for all except the source node &lt;em&gt;s&lt;/em&gt; and the target node &lt;em&gt;t&lt;/em&gt;. We are looking for a solution that pushes a fixed number of units from &lt;em&gt;s&lt;/em&gt; through the network into &lt;em&gt;t&lt;/em&gt;. Therefore, the sum of units flowing out of &lt;em&gt;s&lt;/em&gt; and the sum of units flowing into &lt;em&gt;t&lt;/em&gt; needs to be exactly equal to that fixed number of units.&lt;/p&gt;
+1. &lt;strong&gt;capacity constraints:&lt;/strong&gt; Flow &lt;em&gt;f&lt;/em&gt; through any given edge &lt;em&gt;x&lt;/em&gt; can’t be higher than the edge’s capacity &lt;em&gt;c&lt;/em&gt;.
+$$ f(x) &amp;lt;= c $$&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;createConstraintsMatrix&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;edges&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;total_flow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;ol&gt;
+  &lt;li&gt;&lt;strong&gt;node flow constraints:&lt;/strong&gt; All units in our problem should pass the network. We cannot retain any units in the network, and we cannot have flow out of a node without the equivalent flowing in to that node as well. Therefore, the sum of units flowing through incoming nodes &lt;em&gt;E(n)&lt;/em&gt; into a node needs to be exactly equal to the sum of units flowing through outgoing nodes &lt;em&gt;E(o)&lt;/em&gt; out of that node.
+$$ \sum_{i\in E(n))} f(x_i) = \sum_{i\in E(o))} f(x_i) * -1 = 0 $$&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;initialisation constraints:&lt;/strong&gt; The node flow constraint is true for all except the source node &lt;em&gt;s&lt;/em&gt; and the target node &lt;em&gt;t&lt;/em&gt;. We are looking for a solution that pushes a fixed number of units from &lt;em&gt;s&lt;/em&gt; through the network into &lt;em&gt;t&lt;/em&gt;. Therefore, the sum of units flowing through the outgoing nodes &lt;em&gt;E(s)&lt;/em&gt; out of &lt;em&gt;s&lt;/em&gt; and the sum of units flowing through the incoming nodes &lt;em&gt;E(t)&lt;/em&gt; into &lt;em&gt;t&lt;/em&gt; needs to be exactly equal to that fixed number of units.
+$$ \sum_{i\in E(s))} f(x_i) = \sum_{i\in E(t))} f(x_i) * -1 = total flow $$&lt;/li&gt;
+&lt;/ol&gt;
 
-  &lt;span class=&quot;c1&quot;&gt;# Edge IDs to be used as names
-&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;names_edges&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;edges&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ID&lt;/span&gt;
-  &lt;span class=&quot;c1&quot;&gt;# Number of edges
-&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;numberof_edges&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;names_edges&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;h3 id=&quot;the-solution&quot;&gt;The Solution&lt;/h3&gt;
 
-  &lt;span class=&quot;c1&quot;&gt;# Node IDs to be used as names
-&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;names_nodes&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;edges&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;edges&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&amp;gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;unique&lt;/span&gt;
-  &lt;span class=&quot;c1&quot;&gt;# Number of nodes
-&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;numberof_nodes&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;length&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;names_nodes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;p&gt;I have implemented all of that in the function below:
+```r
+createConstraintsMatrix &amp;lt;- function(edges, total_flow) {&lt;/p&gt;
 
-  &lt;span class=&quot;c1&quot;&gt;# Build constraints matrix
-&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;constraints&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;lhs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;NA&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;dir&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;NA&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;rhs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;NA&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;p&gt;# Edge IDs to be used as names
+  names_edges &amp;lt;- edges$ID
+  # Number of edges
+  numberof_edges &amp;lt;- length(names_edges)&lt;/p&gt;
 
-  &lt;span class=&quot;c1&quot;&gt;#&#39; Build capacity constraints ------------------------------------------------
-&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;#&#39; Flow through each edge should not be larger than capacity.
-&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;#&#39; We create one constraint for each edge. All coefficients zero
-&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;#&#39; except the ones of the edge in question as one, with a constraint
-&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;#&#39; that the result is smaller than or equal to capacity of that edge.
-&lt;/span&gt;
-  &lt;span class=&quot;c1&quot;&gt;# Flow through individual edges
-&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;constraints&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lhs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;edges&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ID&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&amp;gt;%&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;length&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&amp;gt;%&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;diag&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&amp;gt;%&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;set_colnames&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;edges&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ID&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&amp;gt;%&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;set_rownames&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;edges&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ID&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;c1&quot;&gt;# should be smaller than or equal to
-&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;constraints&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dir&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rep&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;&amp;lt;=&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;times&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nrow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;edges&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-  &lt;span class=&quot;c1&quot;&gt;# than capacity
-&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;constraints&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rhs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;edges&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;capacity&lt;/span&gt;
+&lt;p&gt;# Node IDs to be used as names
+  names_nodes &amp;lt;- c(edges$from, edges$to) %&amp;gt;% unique
+  # Number of nodes
+  numberof_nodes &amp;lt;- length(names_nodes)&lt;/p&gt;
 
+&lt;p&gt;# Build constraints matrix
+  constraints &amp;lt;- list(
+    lhs = NA,
+    dir = NA,
+    rhs = NA)&lt;/p&gt;
 
-  &lt;span class=&quot;c1&quot;&gt;#&#39; Build node flow constraints -----------------------------------------------
-&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;#&#39; For each node, find all edges that go to that node
-&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;#&#39; and all edges that go from that node. The sum of all inputs
-&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;#&#39; and all outputs should be zero. So we set inbound edge coefficients as 1
-&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;#&#39; and outbound coefficients as -1. In any viable solution the result should
-&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;#&#39; be equal to zero.
-&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;nodeflow&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;matrix&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-                     &lt;span class=&quot;n&quot;&gt;nrow&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;numberof_nodes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-                     &lt;span class=&quot;n&quot;&gt;ncol&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;numberof_edges&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-                     &lt;span class=&quot;n&quot;&gt;dimnames&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;names_nodes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;names_edges&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;p&gt;#’ Build capacity constraints ————————————————
+  #’ Flow through each edge should not be larger than capacity.
+  #’ We create one constraint for each edge. All coefficients zero
+  #’ except the ones of the edge in question as one, with a constraint
+  #’ that the result is smaller than or equal to capacity of that edge.&lt;/p&gt;
 
-  &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;names_nodes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;p&gt;# Flow through individual edges
+  constraints$lhs &amp;lt;- edges$ID %&amp;gt;%
+    length %&amp;gt;%
+    diag %&amp;gt;%
+    set_colnames(edges$ID) %&amp;gt;%
+    set_rownames(edges$ID)
+  # should be smaller than or equal to
+  constraints$dir &amp;lt;- rep(‘&amp;lt;=’, times = nrow(edges))
+  # than capacity
+  constraints$rhs &amp;lt;- edges$capacity&lt;/p&gt;
 
-    &lt;span class=&quot;c1&quot;&gt;# input arcs
-&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;edges_in&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;edges&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&amp;gt;%&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;filter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&amp;gt;%&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;select&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ID&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&amp;gt;%&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;unlist&lt;/span&gt;
-    &lt;span class=&quot;c1&quot;&gt;# output arcs
-&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;edges_out&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;edges&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&amp;gt;%&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;filter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&amp;gt;%&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;select&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ID&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&amp;gt;%&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;unlist&lt;/span&gt;
+&lt;p&gt;#’ Build node flow constraints ———————————————–
+  #’ For each node, find all edges that go to that node
+  #’ and all edges that go from that node. The sum of all inputs
+  #’ and all outputs should be zero. So we set inbound edge coefficients as 1
+  #’ and outbound coefficients as -1. In any viable solution the result should
+  #’ be equal to zero.&lt;/p&gt;
 
-    &lt;span class=&quot;c1&quot;&gt;# set input coefficients to 1
-&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;nodeflow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;rownames&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nodeflow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;colnames&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nodeflow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;edges_in&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;
+&lt;p&gt;nodeflow &amp;lt;- matrix(0,
+                     nrow = numberof_nodes,
+                     ncol = numberof_edges,
+                     dimnames = list(names_nodes, names_edges))&lt;/p&gt;
 
-    &lt;span class=&quot;c1&quot;&gt;# set output coefficients to -1
-&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;nodeflow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;rownames&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nodeflow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-      &lt;span class=&quot;n&quot;&gt;colnames&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nodeflow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;edges_out&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;-1&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;p&gt;for (i in names_nodes) {&lt;/p&gt;
 
-  &lt;span class=&quot;c1&quot;&gt;# But exclude source and target edges
-&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;# as the zero-sum flow constraint does not apply to these!
-&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;# Source node is assumed to be the one with the minimum ID number
-&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;# Sink node is assumed to be the one with the maximum ID number
-&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;sourcenode_id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;min&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;edges&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;targetnode_id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;max&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;edges&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;c1&quot;&gt;# Keep node flow values for separate step below
-&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;nodeflow_source&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nodeflow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rownames&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nodeflow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sourcenode_id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,]&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;nodeflow_target&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nodeflow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rownames&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nodeflow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;targetnode_id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,]&lt;/span&gt;
-  &lt;span class=&quot;c1&quot;&gt;# Exclude them from node flow here
-&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;nodeflow&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nodeflow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rownames&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nodeflow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sourcenode_id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;targetnode_id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),]&lt;/span&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# input arcs
+edges_in &amp;lt;- edges %&amp;gt;%
+  filter(to == i) %&amp;gt;%
+  select(ID) %&amp;gt;%
+  unlist
+# output arcs
+edges_out &amp;lt;- edges %&amp;gt;%
+  filter(from == i) %&amp;gt;%
+  select(ID) %&amp;gt;%
+  unlist
 
-  &lt;span class=&quot;c1&quot;&gt;# Add nodeflow to the constraints list
-&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;constraints&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lhs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rbind&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;constraints&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lhs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nodeflow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;constraints&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dir&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;constraints&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dir&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rep&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;==&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;times&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nrow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nodeflow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;constraints&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rhs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;constraints&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rhs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rep&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;times&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nrow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nodeflow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt;
+# set input coefficients to 1
+nodeflow[
+  rownames(nodeflow) == i,
+  colnames(nodeflow) %in% edges_in] &amp;lt;- 1
 
-
-  &lt;span class=&quot;c1&quot;&gt;#&#39; Build initialisation constraints ------------------------------------------
-&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;#&#39; For the source and the target node, we want all outbound nodes and
-&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;#&#39; all inbound nodes to be equal to the sum of flow through the network
-&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;#&#39; respectively
-&lt;/span&gt;
-  &lt;span class=&quot;c1&quot;&gt;# Add initialisation to the constraints list
-&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;constraints&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lhs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rbind&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;constraints&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lhs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-                           &lt;span class=&quot;n&quot;&gt;source&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nodeflow_source&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-                           &lt;span class=&quot;n&quot;&gt;target&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nodeflow_target&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;constraints&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dir&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;constraints&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dir&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rep&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;==&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;times&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-  &lt;span class=&quot;c1&quot;&gt;# Flow should be negative for source, and positive for target
-&lt;/span&gt;  &lt;span class=&quot;n&quot;&gt;constraints&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rhs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;constraints&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rhs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;total_flow&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;-1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;total_flow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;constraints&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;constraintsMatrix&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;createConstraintsMatrix&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;edges&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;30&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+# set output coefficients to -1
+nodeflow[
+  rownames(nodeflow) == i,
+  colnames(nodeflow) %in% edges_out] &amp;lt;- -1   }
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;p&gt;This should return something like this:&lt;/p&gt;
+&lt;p&gt;# But exclude source and target edges
+  # as the zero-sum flow constraint does not apply to these!
+  # Source node is assumed to be the one with the minimum ID number
+  # Sink node is assumed to be the one with the maximum ID number
+  sourcenode_id &amp;lt;- min(edges$from)
+  targetnode_id &amp;lt;- max(edges$to)
+  # Keep node flow values for separate step below
+  nodeflow_source &amp;lt;- nodeflow[rownames(nodeflow) == sourcenode_id,]
+  nodeflow_target &amp;lt;- nodeflow[rownames(nodeflow) == targetnode_id,]
+  # Exclude them from node flow here
+  nodeflow &amp;lt;- nodeflow[!rownames(nodeflow) %in% c(sourcenode_id, targetnode_id),]&lt;/p&gt;
+
+&lt;p&gt;# Add nodeflow to the constraints list
+  constraints$lhs &amp;lt;- rbind(constraints$lhs, nodeflow)
+  constraints$dir &amp;lt;- c(constraints$dir, rep(‘==’, times = nrow(nodeflow)))
+  constraints$rhs &amp;lt;- c(constraints$rhs, rep(0, times = nrow(nodeflow)))&lt;/p&gt;
+
+&lt;p&gt;#’ Build initialisation constraints ——————————————
+  #’ For the source and the target node, we want all outbound nodes and
+  #’ all inbound nodes to be equal to the sum of flow through the network
+  #’ respectively&lt;/p&gt;
+
+&lt;p&gt;# Add initialisation to the constraints list
+  constraints$lhs &amp;lt;- rbind(constraints$lhs,
+                           source = nodeflow_source,
+                           target = nodeflow_target)
+  constraints$dir &amp;lt;- c(constraints$dir, rep(‘==’, times = 2))
+  # Flow should be negative for source, and positive for target
+  constraints$rhs &amp;lt;- c(constraints$rhs, total_flow * -1, total_flow)&lt;/p&gt;
+
+&lt;p&gt;return(constraints)
+}&lt;/p&gt;
+
+&lt;p&gt;constraintsMatrix &amp;lt;- createConstraintsMatrix(edgelist, 30)
+```&lt;/p&gt;
+
+&lt;p&gt;This should return something like this. We can see the rows corresponding to capacity constraints as lines with just a single 1 value in &lt;code class=&quot;highlighter-rouge&quot;&gt;lhs&lt;/code&gt;, a &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;=&lt;/code&gt; in &lt;code class=&quot;highlighter-rouge&quot;&gt;dir&lt;/code&gt;, and the capacity of the corresponding edge in the &lt;code class=&quot;highlighter-rouge&quot;&gt;rhs&lt;/code&gt;. Node flow constraints show as one row per node, 1 for incoming nodes and -1 for outgoing nodes, &lt;code class=&quot;highlighter-rouge&quot;&gt;==&lt;/code&gt; in &lt;code class=&quot;highlighter-rouge&quot;&gt;dir&lt;/code&gt;, and zero in &lt;code class=&quot;highlighter-rouge&quot;&gt;rhs&lt;/code&gt;. Finally, the initialisation constraints are implemented with negative coefficients for all edges leaving the source node and positive coefficients for all edges reaching the target node.&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lhs&lt;/span&gt;
 &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;  &lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;  &lt;span class=&quot;m&quot;&gt;3&lt;/span&gt;  &lt;span class=&quot;m&quot;&gt;4&lt;/span&gt;  &lt;span class=&quot;m&quot;&gt;5&lt;/span&gt;  &lt;span class=&quot;m&quot;&gt;6&lt;/span&gt;  &lt;span class=&quot;m&quot;&gt;7&lt;/span&gt;  &lt;span class=&quot;m&quot;&gt;8&lt;/span&gt;  &lt;span class=&quot;m&quot;&gt;9&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;10&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;11&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;12&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;13&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;14&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;15&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;16&lt;/span&gt;
@@ -218,14 +226,14 @@ Test of equation&lt;/p&gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;p&gt;We can now feed all of this information to &lt;code class=&quot;highlighter-rouge&quot;&gt;lpSolve&lt;/code&gt; to calculate the optimal flow values of each edge.&lt;/p&gt;
+&lt;p&gt;We can now feed all of this information to &lt;code class=&quot;highlighter-rouge&quot;&gt;lpSolve&lt;/code&gt; to calculate the optimal flow values of each edge. Our example is relatively small, but because all values are integers it will compile relatively fast, even for much larger number of edges. I have successfully run a similar version of this code for a network with several thousands of edges in less than a minute on my laptop.&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;library&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lpSolve&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
 
 &lt;span class=&quot;c1&quot;&gt;# Run lpSolve to find best solution
 &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;solution&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;lp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
   &lt;span class=&quot;n&quot;&gt;direction&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;min&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;n&quot;&gt;objective.in&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;edges&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cost&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;n&quot;&gt;objective.in&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;edgelist&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cost&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
   &lt;span class=&quot;n&quot;&gt;const.mat&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;constraintsMatrix&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;lhs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
   &lt;span class=&quot;n&quot;&gt;const.dir&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;constraintsMatrix&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dir&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
   &lt;span class=&quot;n&quot;&gt;const.rhs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;constraintsMatrix&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rhs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
@@ -234,6 +242,8 @@ Test of equation&lt;/p&gt;
 &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;solution&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;solution&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
+
+&lt;h3 id=&quot;visualising-the-output&quot;&gt;Visualising the Output&lt;/h3&gt;
 
 &lt;p&gt;To finish off, we write the resulting solution back to the &lt;code class=&quot;highlighter-rouge&quot;&gt;igraph&lt;/code&gt; object and visualise the flow in the optimal solution in a plot&lt;/p&gt;
 
@@ -251,9 +261,13 @@ Test of equation&lt;/p&gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;p&gt;&lt;img src=&quot;&quot; alt=&quot;network flow&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://janlauge.github.io/assets/mincostflow_flow.jpeg&quot; alt=&quot;network flow&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;As you can see, the flow from node 1 is split between edges 1 and 2 because of the limiting capacity, even though this means that some of the flow will have to go from node 3 to node 6 at a higher cost. The expensive nodes are avoided all together and have zero flow.&lt;/p&gt;
+&lt;p&gt;As you can see, the flow from node 1 is split between edges 1 and 2 because of the limiting capacity, even though this means that some of the flow will have to go from node 3 to node 5 at a higher cost. Expensive edges are avoided all together and have zero flow.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;That’s all for now, thanks for reading! I hope it is helpful for someone out there. If you have any comments, questions, or suggestions, please send me an email or tweet. Any feedback would be much appreciated.&lt;/p&gt;
 </description>
         <pubDate>Sun, 06 Aug 2017 10:30:00 +0100</pubDate>
         <link>https://janlauge.github.iohttps://janlauge.github.io//2017/minimum-cost-flow-problem/</link>
