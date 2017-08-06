@@ -15,7 +15,7 @@ I was hoping for a readily available implementation of an algorithm for this pro
 
 ---------------------------------
 
-#Example
+# Example
 Let's start off by building an example graph for illustrating the problem. I used a manually created `edgelist`, defining a directional graph. Each edge has a *from* node and a *to* node, given as numeric ID, as well as a *capacity* (the maximum number of units that can pass through this connection), and a *cost* (the cost of passing a single unit through this connection). The edgelist data frame can be turned into a graph object using the `igraph` package and its `graph_from_edgelist` function.
 
 ```r
@@ -43,8 +43,8 @@ plot(g, edge.label = E(g)$cost)
 ```
 
 The result looks like this:
-![network capacity](janlauge.github.io/assets/mincostflow_capacity.jpg)
-![network cost](janlauge.github.io/assets/mincostflow_cost.jpg)
+![network capacity](assets/mincostflow_capacity.jpeg)
+![network cost](assets/mincostflow_cost.jpeg)
 
 Note that the example I chose only uses non-standard capacities in the edges coming out of node 1, and only uses non-zero cost values in the edges of the middle layer. I separated cost and capacity out like that to keep it simple for this example. In a real world application the values are likely more mixed, and there would probably be ==a lot== more edges.
 
@@ -59,13 +59,13 @@ Constraints are grouped into three major categories:
 2. node flow constraints
 3. initialisation constraints
 
-###capacity constraints
+### capacity constraints
 Each node can only accommodate as much flow as it has capacity for. Simple!
 
-###node flow constraints
+### node flow constraints
 All units in our problem should pass the network. We cannot retain any units in the network, and we cannot have flow out of a node without the equivalent flowing in to that node as well. Therefore, the sum of all units flowing into a node needs to be exactly equal to the sum of units flowing out of that node.
 
-###initialisation
+### initialisation
 The node flow constraint is true for all except the source node *s* and the target node *t*. We are looking for a solution that pushes a fixed number of units from *s* through the network into *t*. Therefore, the sum of units flowing out of *s* and the sum of units flowing into *t* needs to be exactly equal to that fixed number of units.
 
 ```r
