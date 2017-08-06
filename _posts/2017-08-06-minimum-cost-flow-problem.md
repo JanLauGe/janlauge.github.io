@@ -6,19 +6,19 @@ excerpt_separator: <!--more-->
 categories: [data science, optimization, graph theory, R]
 tags: [data-science, optimization, graph-theory, R]
 ---
-**In this post I create an R implementation for optimizing a "minimum cost flow problem" in R using graph theory and the lpSolve package. This can be useful for transportation and allocation applications in supply chain, logistics, and planning.**
+**In this post I create an R implementation of optimizing a "minimum cost flow problem" in R using graph theory and the lpSolve package. This can be useful for transportation and allocation applications in supply chain, logistics, and planning.**
 
 <!--more-->
 
-Recently I came across a business problem that I interpreted as a "minimum cost flow problem".
+## Problem
 
-> The minimum-cost flow problem (MCFP) is an optimization and decision problem to find the cheapest possible way of sending a certain amount of flow through a flow network. A typical application of this problem involves finding the best delivery route from a factory to a warehouse where the road network has some capacity and cost associated. The minimum cost flow problem is one of the most fundamental among all flow and circulation problems because most other such problems can be cast as a minimum cost flow problem and also that it can be solved very efficiently using the network simplex algorithm. *-Wikipedia*
+Recently I came across a business problem that I interpreted as a "minimum cost flow problem". It is optimization and decision problem to find the cheapest possible way of sending a certain amount of flow through a flow network. A typical application of this problem involves finding the best delivery route from a factory to a warehouse where the road network has some capacity and cost associated. *-Wikipedia*
 
-I was hoping for a readily available implementation of an algorithm for this problem via an R-package, but my search on CRAN did not yield any results. So I turned to StackOverflow. You can find my [question here](https://stackoverflow.com/questions/43616480/minimum-cost-network-flow-in-r-potentially-using-igraph/45191824#45191824). Ultimately, I ended up answering it myself. If this is useful for you, I'd appreciate your upvote :)
+I was hoping for a readily available implementation of an algorithm for this problem via an R-package, but my search on CRAN did not yield any results. So I turned to StackOverflow. You can find my [question here](https://stackoverflow.com/questions/43616480/minimum-cost-flow-network-optimization-in-r/). Ultimately, I ended up answering it myself. If this is useful for you, I'd appreciate your upvote :)
 
 ---------------------------------
 
-# Example
+## Example
 Let's start off by building an example graph for illustrating the problem. I used a manually created `edgelist`, defining a directional graph. Each edge has a *from* node and a *to* node, given as numeric ID, as well as a *capacity* (the maximum number of units that can pass through this connection), and a *cost* (the cost of passing a single unit through this connection). The edgelist data frame can be turned into a graph object using the `igraph` package and its `graph_from_edgelist` function.
 
 ```r
@@ -46,30 +46,24 @@ plot(g, edge.label = E(g)$cost)
 ```
 
 The result looks like this:
-![network capacity](assets/mincostflow_capacity.jpeg)
-![network cost](assets/mincostflow_cost.jpeg)
+![network capacity]({{ site.url }}/assets/mincostflow_capacity.jpeg)
+![network cost]({{ site.url }}/assets/mincostflow_cost.jpeg)
 
 Note that the example I chose only uses non-standard capacities in the edges coming out of node 1, and only uses non-zero cost values in the edges of the middle layer. I separated cost and capacity out like that to keep it simple for this example. In a real world application the values are likely more mixed, and there would probably be ==a lot== more edges.
 
 With our example graph we are now ready to formulate the objective function and the constraints of our optimization. Again, wikipedia is helpful
 Test of equation
+
+$$
 \zeta(s) = \sum_{n=1}^\infty \frac{1}{n^s}
+$$
 
 I use the function below to generate the inputs for our solver. They consist of a left-hand side `lhs` (a vector of integers representing coefficients of the flow through each edge), a direction `dir` (<, ==, >), and a right-hand side `rhs` giving the numeric value that will need to be met by each constraint.
 
 Constraints are grouped into three major categories:
-1. capacity constraints
-2. node flow constraints
-3. initialisation constraints
-
-### capacity constraints
-Each node can only accommodate as much flow as it has capacity for. Simple!
-
-### node flow constraints
-All units in our problem should pass the network. We cannot retain any units in the network, and we cannot have flow out of a node without the equivalent flowing in to that node as well. Therefore, the sum of all units flowing into a node needs to be exactly equal to the sum of units flowing out of that node.
-
-### initialisation
-The node flow constraint is true for all except the source node *s* and the target node *t*. We are looking for a solution that pushes a fixed number of units from *s* through the network into *t*. Therefore, the sum of units flowing out of *s* and the sum of units flowing into *t* needs to be exactly equal to that fixed number of units.
+1. **capacity constraints:** Each node can only accommodate as much flow as it has capacity for. Simple!
+2. **node flow constraints:** All units in our problem should pass the network. We cannot retain any units in the network, and we cannot have flow out of a node without the equivalent flowing in to that node as well. Therefore, the sum of all units flowing into a node needs to be exactly equal to the sum of units flowing out of that node.
+3. **initialisation constraints:** The node flow constraint is true for all except the source node *s* and the target node *t*. We are looking for a solution that pushes a fixed number of units from *s* through the network into *t*. Therefore, the sum of units flowing out of *s* and the sum of units flowing into *t* needs to be exactly equal to that fixed number of units.
 
 ```r
 createConstraintsMatrix <- function(edges, total_flow) {

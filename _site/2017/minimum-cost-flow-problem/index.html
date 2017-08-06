@@ -6,8 +6,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   
 
-  <title>Test the format 2</title>
-  <meta name="description" content="<strong>In this post I create an R implementation for optimizing a “minimum cost flow problem” in R using graph theory and the lpSolve package. This can be useful for transportation and allocation applications in supply chain, logistics, and planning.</strong>
+  <title>Minimum Cost Flow Problem in R</title>
+  <meta name="description" content="<strong>In this post I create an R implementation of optimizing a “minimum cost flow problem” in R using graph theory and the lpSolve package. This can be useful for transportation and allocation applications in supply chain, logistics, and planning.</strong>
 
 ">
   <meta name="author" content="Laurens Geffert">
@@ -18,8 +18,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Test the format 2">
-  <meta name="twitter:description" content="<strong>In this post I create an R implementation for optimizing a “minimum cost flow problem” in R using graph theory and the lpSolve package. This can be useful for transportation and allocation applications in supply chain, logistics, and planning.</strong>
+  <meta name="twitter:title" content="Minimum Cost Flow Problem in R">
+  <meta name="twitter:description" content="<strong>In this post I create an R implementation of optimizing a “minimum cost flow problem” in R using graph theory and the lpSolve package. This can be useful for transportation and allocation applications in supply chain, logistics, and planning.</strong>
 
 ">
   
@@ -28,8 +28,8 @@
   <meta name="twitter:image" content="https://janlauge.github.io//images/favicons/favicon-194x194.png" />
 
   <meta property="og:type" content="article">
-  <meta property="og:title" content="Test the format 2">
-  <meta property="og:description" content="<strong>In this post I create an R implementation for optimizing a “minimum cost flow problem” in R using graph theory and the lpSolve package. This can be useful for transportation and allocation applications in supply chain, logistics, and planning.</strong>
+  <meta property="og:title" content="Minimum Cost Flow Problem in R">
+  <meta property="og:description" content="<strong>In this post I create an R implementation of optimizing a “minimum cost flow problem” in R using graph theory and the lpSolve package. This can be useful for transportation and allocation applications in supply chain, logistics, and planning.</strong>
 
 ">
   <meta property="og:image" content="https://janlauge.github.io//images/favicons/favicon-194x194.png" />
@@ -55,7 +55,7 @@
   <meta name="theme-color" content="#ffffff">
 
   <link rel="stylesheet" href="https://janlauge.github.io/css/main.css?1502011960677012200">
-  <link rel="canonical" href="https://janlauge.github.iohttps://janlauge.github.io//2017/test2/">
+  <link rel="canonical" href="https://janlauge.github.iohttps://janlauge.github.io//2017/minimum-cost-flow-problem/">
   <link rel="alternate" type="application/rss+xml" title="Laurens Geffert" href="https://janlauge.github.io/feed.xml">
 </head>
 
@@ -187,30 +187,28 @@
         <article class="post-container post-container--single">
   <header class="post-header">
     <div class="post-meta">
-      <time datetime="1 Aug 2017" class="post-meta__date date">1 Aug 2017</time>
+      <time datetime="6 Aug 2017" class="post-meta__date date">6 Aug 2017</time>
       
-      &#8226; <span class="post-meta__tags">on <a href="https://janlauge.github.io/tags/#data science">data science</a> <a href="https://janlauge.github.io/tags/#machine learning">machine learning</a> <a href="https://janlauge.github.io/tags/#big data">big data</a> </span>
+      &#8226; <span class="post-meta__tags">on <a href="https://janlauge.github.io/tags/#data-science">data-science</a> <a href="https://janlauge.github.io/tags/#optimization">optimization</a> <a href="https://janlauge.github.io/tags/#graph-theory">graph-theory</a> <a href="https://janlauge.github.io/tags/#R">R</a> </span>
       
     </div>
-    <h1 class="post-title">Test the format 2</h1>
+    <h1 class="post-title">Minimum Cost Flow Problem in R</h1>
   </header>
 
   <section class="post">
-    <p><strong>In this post I create an R implementation for optimizing a “minimum cost flow problem” in R using graph theory and the lpSolve package. This can be useful for transportation and allocation applications in supply chain, logistics, and planning.</strong></p>
+    <p><strong>In this post I create an R implementation of optimizing a “minimum cost flow problem” in R using graph theory and the lpSolve package. This can be useful for transportation and allocation applications in supply chain, logistics, and planning.</strong></p>
 
 <!--more-->
 
-<p>Recently I came across a business problem that I interpreted as a “minimum cost flow problem”.</p>
+<h2 id="problem">Problem</h2>
 
-<blockquote>
-  <p>The minimum-cost flow problem (MCFP) is an optimization and decision problem to find the cheapest possible way of sending a certain amount of flow through a flow network. A typical application of this problem involves finding the best delivery route from a factory to a warehouse where the road network has some capacity and cost associated. The minimum cost flow problem is one of the most fundamental among all flow and circulation problems because most other such problems can be cast as a minimum cost flow problem and also that it can be solved very efficiently using the network simplex algorithm. <em>-Wikipedia</em></p>
-</blockquote>
+<p>Recently I came across a business problem that I interpreted as a “minimum cost flow problem”. It is optimization and decision problem to find the cheapest possible way of sending a certain amount of flow through a flow network. A typical application of this problem involves finding the best delivery route from a factory to a warehouse where the road network has some capacity and cost associated. <em>-Wikipedia</em></p>
 
-<p>I was hoping for a readily available implementation of an algorithm for this problem via an R-package, but my search on CRAN did not yield any results. So I turned to StackOverflow. You can find my <a href="https://stackoverflow.com/questions/43616480/minimum-cost-network-flow-in-r-potentially-using-igraph/45191824#45191824">question here</a>. Ultimately, I ended up answering it myself. If this is useful for you, I’d appreciate your upvote :)</p>
+<p>I was hoping for a readily available implementation of an algorithm for this problem via an R-package, but my search on CRAN did not yield any results. So I turned to StackOverflow. You can find my <a href="https://stackoverflow.com/questions/43616480/minimum-cost-flow-network-optimization-in-r/">question here</a>. Ultimately, I ended up answering it myself. If this is useful for you, I’d appreciate your upvote :)</p>
 
 <hr />
 
-<h1 id="example">Example</h1>
+<h2 id="example">Example</h2>
 <p>Let’s start off by building an example graph for illustrating the problem. I used a manually created <code class="highlighter-rouge">edgelist</code>, defining a directional graph. Each edge has a <em>from</em> node and a <em>to</em> node, given as numeric ID, as well as a <em>capacity</em> (the maximum number of units that can pass through this connection), and a <em>cost</em> (the cost of passing a single unit through this connection). The edgelist data frame can be turned into a graph object using the <code class="highlighter-rouge">igraph</code> package and its <code class="highlighter-rouge">graph_from_edgelist</code> function.</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="n">tidyverse</span><span class="p">)</span>
@@ -238,30 +236,22 @@
 </div>
 
 <p>The result looks like this:
-<img src="assets/mincostflow_capacity.jpeg" alt="network capacity" />
-<img src="assets/mincostflow_cost.jpeg" alt="network cost" /></p>
+<img src="https://janlauge.github.io/assets/mincostflow_capacity.jpeg" alt="network capacity" />
+<img src="https://janlauge.github.io/assets/mincostflow_cost.jpeg" alt="network cost" /></p>
 
 <p>Note that the example I chose only uses non-standard capacities in the edges coming out of node 1, and only uses non-zero cost values in the edges of the middle layer. I separated cost and capacity out like that to keep it simple for this example. In a real world application the values are likely more mixed, and there would probably be ==a lot== more edges.</p>
 
 <p>With our example graph we are now ready to formulate the objective function and the constraints of our optimization. Again, wikipedia is helpful
-Test of equation
-\zeta(s) = \sum_{n=1}^\infty \frac{1}{n^s}</p>
+Test of equation</p>
+
+<script type="math/tex; mode=display">\zeta(s) = \sum_{n=1}^\infty \frac{1}{n^s}</script>
 
 <p>I use the function below to generate the inputs for our solver. They consist of a left-hand side <code class="highlighter-rouge">lhs</code> (a vector of integers representing coefficients of the flow through each edge), a direction <code class="highlighter-rouge">dir</code> (&lt;, ==, &gt;), and a right-hand side <code class="highlighter-rouge">rhs</code> giving the numeric value that will need to be met by each constraint.</p>
 
 <p>Constraints are grouped into three major categories:
-1. capacity constraints
-2. node flow constraints
-3. initialisation constraints</p>
-
-<h3 id="capacity-constraints">capacity constraints</h3>
-<p>Each node can only accommodate as much flow as it has capacity for. Simple!</p>
-
-<h3 id="node-flow-constraints">node flow constraints</h3>
-<p>All units in our problem should pass the network. We cannot retain any units in the network, and we cannot have flow out of a node without the equivalent flowing in to that node as well. Therefore, the sum of all units flowing into a node needs to be exactly equal to the sum of units flowing out of that node.</p>
-
-<h3 id="initialisation">initialisation</h3>
-<p>The node flow constraint is true for all except the source node <em>s</em> and the target node <em>t</em>. We are looking for a solution that pushes a fixed number of units from <em>s</em> through the network into <em>t</em>. Therefore, the sum of units flowing out of <em>s</em> and the sum of units flowing into <em>t</em> needs to be exactly equal to that fixed number of units.</p>
+1. <strong>capacity constraints:</strong> Each node can only accommodate as much flow as it has capacity for. Simple!
+2. <strong>node flow constraints:</strong> All units in our problem should pass the network. We cannot retain any units in the network, and we cannot have flow out of a node without the equivalent flowing in to that node as well. Therefore, the sum of all units flowing into a node needs to be exactly equal to the sum of units flowing out of that node.
+3. <strong>initialisation constraints:</strong> The node flow constraint is true for all except the source node <em>s</em> and the target node <em>t</em>. We are looking for a solution that pushes a fixed number of units from <em>s</em> through the network into <em>t</em>. Therefore, the sum of units flowing out of <em>s</em> and the sum of units flowing into <em>t</em> needs to be exactly equal to that fixed number of units.</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code><span class="n">createConstraintsMatrix</span> <span class="o">&lt;-</span> <span class="k">function</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="n">total_flow</span><span class="p">)</span> <span class="p">{</span>
 
