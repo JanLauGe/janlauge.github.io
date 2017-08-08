@@ -6,12 +6,12 @@ excerpt_separator: <!--more-->
 categories: [data science, optimization, graph theory, R]
 tags: [data-science, optimization, graph-theory, R]
 ---
-**In this post I create an R implementation of optimizing a "minimum cost flow problem" in R using graph theory and the lpSolve package. This can be useful for transportation and allocation applications in supply chain, logistics, and planning.**
+**Or how to get all your X from A to B. In this post I create an R implementation of optimizing a "minimum cost flow problem" in R using graph theory and the lpSolve package. This can be useful for transportation and allocation applications in supply chain, logistics, and planning.**
 
 <!--more-->
 
 ### The Problem
-Recently I came across a business problem that I interpreted as a "minimum cost flow problem". Accodring to Wikipedia it is optimization and decision problem to find the cheapest possible way of sending a certain amount of flow through a flow network. A typical application of this problem involves finding the best delivery route from a factory to a warehouse where the road network has some capacity and cost associated.
+Recently I came across a business problem that I interpreted as a "minimum cost flow problem". According to Wikipedia it is an optimization and decision problem to find the cheapest possible way of sending a certain amount of flow through a flow network. A typical application of this problem involves finding the best delivery route from a factory to a warehouse where the road network has some capacity and cost associated.
 
 I was hoping for a readily available implementation of an algorithm for this problem via an R-package, but my search on CRAN did not yield any results. So I turned to StackOverflow. You can find my [question here](https://stackoverflow.com/questions/43616480/minimum-cost-flow-network-optimization-in-r/). Ultimately, I ended up answering it myself. If this is useful to you, I'd appreciate your upvote :)
 
@@ -54,6 +54,7 @@ Note that the example I chose only uses non-standard capacities in the edges com
 
 With our example graph we are now ready to formulate the objective function and the constraints of our optimization. I use the function below to generate the inputs for our solver. They consist of a left-hand side `lhs` (a vector of integers representing coefficients of the flow through each edge), a direction `dir` (<, ==, >), and a right-hand side `rhs` giving the numeric value that will need to be met by each constraint.
 
+### The Solution
 Our objective is to minimize the total cost incurred, subject to the relevant constraints
 
 $$ minimize(\sum_{i = 1}^{E} f(x_i) * c) $$
@@ -71,7 +72,6 @@ $$\sum_{i\in E(n))}f(x_i)=\sum_{i\in E(o))}f(x_i)*-1=0$$
 
 $$\sum_{i\in E(s))}f(x_i)=\sum_{i\in E(t))}f(x_i)*-1=total flow$$
 
-### The Solution
 I have implemented all of that in the function below:
 
 ```r

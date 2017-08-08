@@ -5,18 +5,18 @@
     <description>Personal webpage and blog - on data science and machine learning</description>
     <link>https://janlauge.github.iohttps://janlauge.github.io//</link>
     <atom:link href="https://janlauge.github.iohttps://janlauge.github.io//feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sun, 06 Aug 2017 15:04:44 +0100</pubDate>
-    <lastBuildDate>Sun, 06 Aug 2017 15:04:44 +0100</lastBuildDate>
+    <pubDate>Tue, 08 Aug 2017 22:06:39 +0100</pubDate>
+    <lastBuildDate>Tue, 08 Aug 2017 22:06:39 +0100</lastBuildDate>
     <generator>Jekyll v3.0.2</generator>
     
       <item>
         <title>Minimum Cost Flow</title>
-        <description>&lt;p&gt;&lt;strong&gt;In this post I create an R implementation of optimizing a “minimum cost flow problem” in R using graph theory and the lpSolve package. This can be useful for transportation and allocation applications in supply chain, logistics, and planning.&lt;/strong&gt;&lt;/p&gt;
+        <description>&lt;p&gt;&lt;strong&gt;Or how to get all your X from A to B. In this post I create an R implementation of optimizing a “minimum cost flow problem” in R using graph theory and the lpSolve package. This can be useful for transportation and allocation applications in supply chain, logistics, and planning.&lt;/strong&gt;&lt;/p&gt;
 
 &lt;!--more--&gt;
 
 &lt;h3 id=&quot;the-problem&quot;&gt;The Problem&lt;/h3&gt;
-&lt;p&gt;Recently I came across a business problem that I interpreted as a “minimum cost flow problem”. Accodring to Wikipedia it is optimization and decision problem to find the cheapest possible way of sending a certain amount of flow through a flow network. A typical application of this problem involves finding the best delivery route from a factory to a warehouse where the road network has some capacity and cost associated.&lt;/p&gt;
+&lt;p&gt;Recently I came across a business problem that I interpreted as a “minimum cost flow problem”. According to Wikipedia it is an optimization and decision problem to find the cheapest possible way of sending a certain amount of flow through a flow network. A typical application of this problem involves finding the best delivery route from a factory to a warehouse where the road network has some capacity and cost associated.&lt;/p&gt;
 
 &lt;p&gt;I was hoping for a readily available implementation of an algorithm for this problem via an R-package, but my search on CRAN did not yield any results. So I turned to StackOverflow. You can find my &lt;a href=&quot;https://stackoverflow.com/questions/43616480/minimum-cost-flow-network-optimization-in-r/&quot;&gt;question here&lt;/a&gt;. Ultimately, I ended up answering it myself. If this is useful to you, I’d appreciate your upvote :)&lt;/p&gt;
 
@@ -59,6 +59,7 @@
 
 &lt;p&gt;With our example graph we are now ready to formulate the objective function and the constraints of our optimization. I use the function below to generate the inputs for our solver. They consist of a left-hand side &lt;code class=&quot;highlighter-rouge&quot;&gt;lhs&lt;/code&gt; (a vector of integers representing coefficients of the flow through each edge), a direction &lt;code class=&quot;highlighter-rouge&quot;&gt;dir&lt;/code&gt; (&amp;lt;, ==, &amp;gt;), and a right-hand side &lt;code class=&quot;highlighter-rouge&quot;&gt;rhs&lt;/code&gt; giving the numeric value that will need to be met by each constraint.&lt;/p&gt;
 
+&lt;h3 id=&quot;the-solution&quot;&gt;The Solution&lt;/h3&gt;
 &lt;p&gt;Our objective is to minimize the total cost incurred, subject to the relevant constraints&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;minimize(\sum_{i = 1}^{E} f(x_i) * c)&lt;/script&gt;
@@ -81,7 +82,6 @@ f(x)&lt;=c %]]&gt;&lt;/script&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;\sum_{i\in E(s))}f(x_i)=\sum_{i\in E(t))}f(x_i)*-1=total flow&lt;/script&gt;
 
-&lt;h3 id=&quot;the-solution&quot;&gt;The Solution&lt;/h3&gt;
 &lt;p&gt;I have implemented all of that in the function below:&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;createConstraintsMatrix&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;edges&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;total_flow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;

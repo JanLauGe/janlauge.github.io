@@ -7,7 +7,7 @@
   
 
   <title>Minimum Cost Flow</title>
-  <meta name="description" content="<strong>In this post I create an R implementation of optimizing a “minimum cost flow problem” in R using graph theory and the lpSolve package. This can be useful for transportation and allocation applications in supply chain, logistics, and planning.</strong>
+  <meta name="description" content="<strong>Or how to get all your X from A to B. In this post I create an R implementation of optimizing a “minimum cost flow problem” in R using graph theory and the lpSolve package. This can be useful for transportation and allocation applications in supply chain, logistics, and planning.</strong>
 
 ">
   <meta name="author" content="Laurens Geffert">
@@ -19,7 +19,7 @@
 
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Minimum Cost Flow">
-  <meta name="twitter:description" content="<strong>In this post I create an R implementation of optimizing a “minimum cost flow problem” in R using graph theory and the lpSolve package. This can be useful for transportation and allocation applications in supply chain, logistics, and planning.</strong>
+  <meta name="twitter:description" content="<strong>Or how to get all your X from A to B. In this post I create an R implementation of optimizing a “minimum cost flow problem” in R using graph theory and the lpSolve package. This can be useful for transportation and allocation applications in supply chain, logistics, and planning.</strong>
 
 ">
   
@@ -29,7 +29,7 @@
 
   <meta property="og:type" content="article">
   <meta property="og:title" content="Minimum Cost Flow">
-  <meta property="og:description" content="<strong>In this post I create an R implementation of optimizing a “minimum cost flow problem” in R using graph theory and the lpSolve package. This can be useful for transportation and allocation applications in supply chain, logistics, and planning.</strong>
+  <meta property="og:description" content="<strong>Or how to get all your X from A to B. In this post I create an R implementation of optimizing a “minimum cost flow problem” in R using graph theory and the lpSolve package. This can be useful for transportation and allocation applications in supply chain, logistics, and planning.</strong>
 
 ">
   <meta property="og:image" content="https://janlauge.github.io//images/favicons/favicon-194x194.png" />
@@ -54,7 +54,7 @@
   <meta name="msapplication-TileImage" content="https://janlauge.github.io/images/favicons/mstile-144x144.png">
   <meta name="theme-color" content="#ffffff">
 
-  <link rel="stylesheet" href="https://janlauge.github.io/css/main.css?1502028284926464700">
+  <link rel="stylesheet" href="https://janlauge.github.io/css/main.css?1502226399812356900">
   <link rel="canonical" href="https://janlauge.github.iohttps://janlauge.github.io//2017/minimum-cost-flow-problem/">
   <link rel="alternate" type="application/rss+xml" title="Laurens Geffert" href="https://janlauge.github.io/feed.xml">
 </head>
@@ -85,12 +85,17 @@
 
       		  <!-- Blog Button -->
       		  <ul class="navigation">
-      			<li class="navigation__item"><a href="/index" title="Blog posts" class="blog-button">Blog</a></li>
+      			  <li class="navigation__item"><a href="/index" title="Blog posts" class="blog-button">Blog</a></li>
       		  </ul>
 
       		  <!-- About Button -->
       		  <ul class="navigation">
-      			<li class="navigation__item"><a href="/about" title="About the author" class="blog-button">About</a></li>
+      			  <li class="navigation__item"><a href="/about" title="About the author" class="blog-button">About</a></li>
+      		  </ul>
+
+      		  <!-- Blog Roll -->
+      		  <ul class="navigation">
+      			  <li class="navigation__item"><a href="/links" title="Links to other sites" class="blog-button">Links</a></li>
       		  </ul>
 
           </nav>
@@ -171,16 +176,6 @@
             </ul>
           </nav>
 
-          <nav class="cover-navigation cover-navigation--blogroll">
-
-      		  <!-- Blog Roll -->
-      		  <ul class="navigation">
-      			  <li class="navigation__item"><a href="https://www.r-bloggers.com" title="R Bloggers" class="blog-button">R Bloggers</a></li>
-      		  </ul>
-
-          </nav>
-
-
         </div>
 
       </div>
@@ -206,12 +201,12 @@
   </header>
 
   <section class="post">
-    <p><strong>In this post I create an R implementation of optimizing a “minimum cost flow problem” in R using graph theory and the lpSolve package. This can be useful for transportation and allocation applications in supply chain, logistics, and planning.</strong></p>
+    <p><strong>Or how to get all your X from A to B. In this post I create an R implementation of optimizing a “minimum cost flow problem” in R using graph theory and the lpSolve package. This can be useful for transportation and allocation applications in supply chain, logistics, and planning.</strong></p>
 
 <!--more-->
 
 <h3 id="the-problem">The Problem</h3>
-<p>Recently I came across a business problem that I interpreted as a “minimum cost flow problem”. Accodring to Wikipedia it is optimization and decision problem to find the cheapest possible way of sending a certain amount of flow through a flow network. A typical application of this problem involves finding the best delivery route from a factory to a warehouse where the road network has some capacity and cost associated.</p>
+<p>Recently I came across a business problem that I interpreted as a “minimum cost flow problem”. According to Wikipedia it is an optimization and decision problem to find the cheapest possible way of sending a certain amount of flow through a flow network. A typical application of this problem involves finding the best delivery route from a factory to a warehouse where the road network has some capacity and cost associated.</p>
 
 <p>I was hoping for a readily available implementation of an algorithm for this problem via an R-package, but my search on CRAN did not yield any results. So I turned to StackOverflow. You can find my <a href="https://stackoverflow.com/questions/43616480/minimum-cost-flow-network-optimization-in-r/">question here</a>. Ultimately, I ended up answering it myself. If this is useful to you, I’d appreciate your upvote :)</p>
 
@@ -254,6 +249,7 @@
 
 <p>With our example graph we are now ready to formulate the objective function and the constraints of our optimization. I use the function below to generate the inputs for our solver. They consist of a left-hand side <code class="highlighter-rouge">lhs</code> (a vector of integers representing coefficients of the flow through each edge), a direction <code class="highlighter-rouge">dir</code> (&lt;, ==, &gt;), and a right-hand side <code class="highlighter-rouge">rhs</code> giving the numeric value that will need to be met by each constraint.</p>
 
+<h3 id="the-solution">The Solution</h3>
 <p>Our objective is to minimize the total cost incurred, subject to the relevant constraints</p>
 
 <script type="math/tex; mode=display">minimize(\sum_{i = 1}^{E} f(x_i) * c)</script>
@@ -276,7 +272,6 @@ f(x)<=c %]]></script>
 
 <script type="math/tex; mode=display">\sum_{i\in E(s))}f(x_i)=\sum_{i\in E(t))}f(x_i)*-1=total flow</script>
 
-<h3 id="the-solution">The Solution</h3>
 <p>I have implemented all of that in the function below:</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code><span class="n">createConstraintsMatrix</span> <span class="o">&lt;-</span> <span class="k">function</span><span class="p">(</span><span class="n">edges</span><span class="p">,</span> <span class="n">total_flow</span><span class="p">)</span> <span class="p">{</span>
@@ -484,7 +479,7 @@ f(x)<=c %]]></script>
 </footer>
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script type="text/javascript" src="https://janlauge.github.io/js/main.js?1502028284926464700"></script>
+<script type="text/javascript" src="https://janlauge.github.io/js/main.js?1502226399812356900"></script>
 
 
     </div>
