@@ -1,8 +1,9 @@
 ---
 layout: post
+comments: true
+excerpt_separator: <!--more-->
 title:  Minimum Cost Flow
 date:   2017-08-06 09:30:00
-excerpt_separator: <!--more-->
 categories: [data science, optimization, graph theory, algorithms, R]
 tags: [data-science, optimization, graph-theory, algorithms, R]
 ---

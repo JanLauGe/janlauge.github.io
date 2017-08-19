@@ -1,8 +1,9 @@
 ---
 layout: post
+comments: true
+excerpt_separator: <!--more-->
 title:  Hexplode Game AI
 date:   2017-08-19 09:00:00
-excerpt_separator: <!--more-->
 categories: [python, algorithms, games]
 tags: [python, algorithms, games]
 ---
@@ -108,8 +109,6 @@ def AddCounter(scores, BoardShape, tile_id, player_id, player_current):
         return(scores)
 ```
 
------------------------
-
 ### Growing Trees
 Now that we can calculate potential future board states, we can use this to
 create a tree of move scenarios. A given board state allows for a number of moves
@@ -124,51 +123,49 @@ class Node(object):
     """Single node in the tree of potential moves.
     Represented by a particular board configuration (node_scores)"""
 
-        def __init__(self, BoardShape=dict(), player_id=int(),
-        node_player=int(), node_scores=dict(), node_depth=int(), node_move=None):
+      def __init__(self, BoardShape=dict(), player_id=int(),
+      node_player=int(), node_scores=dict(), node_depth=int(), node_move=None):
 
-            # Set node properties
-            self.BoardShape = BoardShape
-            self.player_id = player_id
-            self.node_player = node_player
-            self.node_scores = node_scores
-            self.node_depth = node_depth
-            self.node_value = CalculateValue(self.node_scores, BoardShape, self.player_id)
-            self.node_move = node_move
-            self.node_children = []
+          # Set node properties
+          self.BoardShape = BoardShape
+          self.player_id = player_id
+          self.node_player = node_player
+          self.node_scores = node_scores
+          self.node_depth = node_depth
+          self.node_value = CalculateValue(self.node_scores, BoardShape, self.player_id)
+          self.node_move = node_move
+          self.node_children = []
 
-            #Prefix to use with scores
-            if (self.node_player == self.player_id):
-                self.prefix = 1
-            else:
-                self.prefix = -1
+          #Prefix to use with scores
+          if (self.node_player == self.player_id):
+              self.prefix = 1
+          else:
+              self.prefix = -1
 
-            if self.node_value == maxsize or self.node_value == -maxsize:
-                self.node_depth = 0
-            else:
-                self.node_depth = node_depth
+          if self.node_value == maxsize or self.node_value == -maxsize:
+              self.node_depth = 0
+          else:
+              self.node_depth = node_depth
 
-            # If max depth is not reached yet, create node children    
-            if self.node_depth > 0:
-                self.CreateChildren()
+          # If max depth is not reached yet, create node children    
+          if self.node_depth > 0:
+              self.CreateChildren()
 
-        def CreateChildren(self):
-            """Create one child node for each possible move in the board state
-            of this node and calculate their board configuration"""
-            for tile_id in self.node_scores.keys():
-                if ((scores[tile_id] >= 0) and (self.prefix > 0)) or ((scores[tile_id] <= 0) and (self.prefix < 0)):
-                    future_scores = copy(self.node_scores)
-                    future_scores = AddCounter(future_scores, self.BoardShape, tile_id, player_id, self.node_player)
-                    self.node_children.append(Node(
-                        self.BoardShape,
-                        self.player_id,
-                        (self.node_player + 1) % 2,
-                        future_scores,
-                        self.node_depth -1,
-                        tile_id))
+      def CreateChildren(self):
+          """Create one child node for each possible move in the board state
+          of this node and calculate their board configuration"""
+          for tile_id in self.node_scores.keys():
+              if ((scores[tile_id] >= 0) and (self.prefix > 0)) or ((scores[tile_id] <= 0) and (self.prefix < 0)):
+                  future_scores = copy(self.node_scores)
+                  future_scores = AddCounter(future_scores, self.BoardShape, tile_id, player_id, self.node_player)
+                  self.node_children.append(Node(
+                      self.BoardShape,
+                      self.player_id,
+                      (self.node_player + 1) % 2,
+                      future_scores,
+                      self.node_depth -1,
+                      tile_id))
 ```
-
---------------------------------------------------------------------------------
 
 ### Adding Value
 So we have our tree of all possible future board configurations now.
@@ -178,15 +175,33 @@ Let's assume for a second that we grew trees indefinitely, until each branch
 reaches a "game-over" state where all counters belong to one player.
 Furthermore, let's say that we will assign a value to each of those terminal
 branches: `Inf` (positive infinity) for a branch in which we win, `-Inf`
-(negative infinity) for a branch in which we loose. We can
-"back-propagate" these outcomes up the tree and assume that each player will
+(negative infinity) for a branch in which we loose.
+
+In reality, however, we will not be able to calculate all terminal nodes.
+Consider this: A hexagonal board of side length 3 will have 19 tiles, equating
+to 19 possible moves in the first round. Each of these results in a board state
+with 18 possible moves for the enemy (361 board states in total), then 18 for us
+again (6517 board states in total), and so on and so forth. This quickly gets
+out of hand. We somehow need to keep the number of board states manageable.
+
+One way to achieve this is to limit the depth of our tree and evaluate the
+"favourability" of each terminal leaf using a heuristic value function.
+In this example, let's go for something simple, such as the number of markers
+that we have on the board, minus the number of enemy markers. If for a given
+board state we're in the lead, the number will be positive. If we're behind,
+the number will be negative.
+
+```python
+
+```
+
+We can "back-propagate" these outcomes up the tree and assume that each player will
 always pick the move that will bring them closer towards a winning branch rather
 than a loosing branch. In other words, we will try to **maximise** the value,
 our enemy will try to **minimize** it. Since we take turns at the moves, it
 becomes Max, Min, Max, Min, ergo MiniMax. This can be coded up with yet another
 recursive approach. This time we use two functions that call one-another, and
 take the node tree object we created as an input variable.
-
 
 ```python
 def Maxvalue(node):
@@ -210,12 +225,12 @@ def Minvalue(node):
         return best_value
 ```
 
---------------------------------------------------------------------------------
-
-Finally, we can put it all together. The `Minimax` function takes the inputs
-`board`, `game_id` and `player_id` from the flask app hosting the game,
-calculates the future possible board states by instanciating a `Node` object,
-and then picks the most favourable move from all moves currently possible by
+### Putting it all Together
+Finally, we can join up all these individual parts and make them talk to the
+web app. The `Minimax` function below takes the inputs `board`, `game_id` and
+`player_id` from the flask app hosting the game, calculates the future
+possible board states by instanciating a `Node` object, and then picks
+the most favourable move from all moves currently possible by
 evaluating the future scenarios.
 
 ```python
@@ -231,6 +246,7 @@ def Minimax(board, game_id, player_id):
     best_move = max(possible_moves.keys(), key=(lambda k: possible_moves[k]))
     return best_move
 ```
+
 I've included this function in my version of the web app running on pythonanywhere,
 so head over there and give it a go! [http://janlauge.pythonanywhere.com](http://janlauge.pythonanywhere.com/)
 

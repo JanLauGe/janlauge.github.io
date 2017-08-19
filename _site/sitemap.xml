@@ -3,6 +3,21 @@
   
     
     <url>
+      <loc>https://janlauge.github.io/2017/hexplode-game-ai/</loc>
+      
+        <lastmod>2017-08-19T10:00:00+01:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.5</priority>
+      
+    </url>
+    
+  
+    
+    <url>
       <loc>https://janlauge.github.io/2017/minimum-cost-flow-problem/</loc>
       
         <lastmod>2017-08-06T10:30:00+01:00</lastmod>
@@ -21,7 +36,7 @@
     <url>
       <loc>https://janlauge.github.io/about/</loc>
       
-        <lastmod>2017-08-08T22:06:39+01:00</lastmod>
+        <lastmod>2017-08-19T16:50:39+01:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -36,7 +51,7 @@
     <url>
       <loc>https://janlauge.github.io/categories/</loc>
       
-        <lastmod>2017-08-08T22:06:39+01:00</lastmod>
+        <lastmod>2017-08-19T16:50:39+01:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -51,7 +66,7 @@
     <url>
       <loc>https://janlauge.github.io/feed.xml</loc>
       
-        <lastmod>2017-08-08T22:06:39+01:00</lastmod>
+        <lastmod>2017-08-19T16:50:39+01:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -68,7 +83,7 @@
     <url>
       <loc>https://janlauge.github.io/links/</loc>
       
-        <lastmod>2017-08-08T22:06:39+01:00</lastmod>
+        <lastmod>2017-08-19T16:50:39+01:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
