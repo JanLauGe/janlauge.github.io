@@ -3,10 +3,10 @@ layout: post
 title:  Minimum Cost Flow
 date:   2017-08-06 09:30:00
 excerpt_separator: <!--more-->
-categories: [data science, optimization, graph theory, R]
-tags: [data-science, optimization, graph-theory, R]
+categories: [data science, optimization, graph theory, algorithms, R]
+tags: [data-science, optimization, graph-theory, algorithms, R]
 ---
-**Or how to get all your X from A to B. In this post I create an R implementation of optimizing a "minimum cost flow problem" in R using graph theory and the lpSolve package. This can be useful for transportation and allocation applications in supply chain, logistics, and planning.**
+**Or how to get all your X from A to B for very little C. In this post I create an R implementation of optimizing a "minimum cost flow problem" in R using graph theory and the lpSolve package. This can be useful for transportation and allocation applications in supply chain, logistics, and planning.**
 
 <!--more-->
 
