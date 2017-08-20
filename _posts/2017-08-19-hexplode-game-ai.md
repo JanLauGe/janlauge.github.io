@@ -11,7 +11,7 @@ tags: [python, algorithms, games]
 their tokens as means to take over enemy tokens. Over time, chain reactions become
 more and more common and as a result the game becomes difficult to predict.
 Here, I implement a 'minimax' algorithm to create a (very basic) computer
-player for this game**
+player for this game. You can test your skills against it [here](http://janlauge.pythonanywhere.com/)**
 
 <!--more-->
 
