@@ -5,3 +5,12 @@ It was created using jekyll, markdown, javascript, and github.
 
 # jekyll-uno
 The theme of this site is a modified version of Jekyll-Uno - a minimal, responsive theme for Jekyll based on the [Uno](https://github.com/daleanthony/Uno) theme for Ghost. It was originally created by [Josh Gerdes](https://github.com/joshgerdes/jekyll-uno). It is under [the MIT license].
+
+# To do
+These things remain to be addressed:
+
+* mathematical annotation from Markdown to html
+* collapsible code snippets (particularly on mobile devices)
+* size of headings (reduce by one?)
+* code chunk background transparency
+* add "share this post" to blog like http://fishyoperations.com/2014/12/12/new-blog.html
