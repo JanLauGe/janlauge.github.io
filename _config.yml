@@ -1,6 +1,6 @@
 # Site settings
 title: Laurens Geffert
-description: 'Personal webpage and blog - on data science and machine learning'
+description: 'Data Science Portfolio'
 url: 'https://janlauge.github.io'
 baseurl: 'https://janlauge.github.io/'
 google_analytics: 'UA-104096144-1'
