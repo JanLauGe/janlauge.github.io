@@ -11,10 +11,11 @@ tags: [coding, python, tools]
 <!--more-->
 
 ### The Problem
-My brother recently introduced me to a new podcast, (RadioWissen)[http://www.br-online.de/podcast/mp3-download/bayern2/mp3-download-podcast-radiowissen.shtml]. I can thoroughly recommend it to all German speakers. If you do not speak German, you will have to stick with the Radio4 gems such as (More or less, behind the stats)[http://www.bbc.co.uk/programmes/p02nrss1/episodes/downloads]. Now, my brother is a "laggard" in terms of technological adaptation, and as a result he does not own a smart phone. Instead, he downloads podcasts as mp3 files to his desktop PC. He wanted to download all episodes of RadioWissen, but with over 2 000 episodes published to date, this would have been very tedious to do manually.
+My brother recently introduced me to a new podcast, [RadioWissen](http://www.br-online.de/podcast/mp3-download/bayern2/mp3-download-podcast-radiowissen.shtml). I can thoroughly recommend it to all German speakers. If you do not speak German, you will have to stick with the Radio4 gems such as [More or less, behind the stats](http://www.bbc.co.uk/programmes/p02nrss1/episodes/downloads). Now, my brother is a "laggard" in terms of technological adaptation, and as a result he does not own a smart phone. Instead, he downloads podcasts as mp3 files to his desktop PC. He wanted to download all episodes of RadioWissen, but with over 2 000 episodes published to date, this would have been very tedious to do manually.
 
-![adaptation of new technologies]({{ site.url }}/assets/podcasts_innovation.gif)
-*Caricature by Tom Fishburne, taken from (Pinterest)[https://www.pinterest.co.uk/timeldridge/diffusion-of-innovations/]*
+![adaptation of new technologies]({{ site.url }}/assets/podcasts_innovation.jpg)
+
+*Caricature by Tom Fishburne, taken from [Pinterest](https://www.pinterest.co.uk/timeldridge/diffusion-of-innovations/)*
 
 ### The Solution
 Enter XML files that are behind the popular RSS feed format. Like any major podcast programme, RadioWissen lists all episodes in an XML file on their website, including file names and meta data. This provides the perfect basis to iterate over and programmatically download episodes. Below is my approach in python. I am using the "BeautifulSoup" library to extract URLs and the "requests" library to retrieve the files.

@@ -16,11 +16,12 @@ Working as a data scientist in a large organisation, chances are you will have t
 - files use up additional disk space
 - csv files do not store data types
 
-Generally, I prefer to connect my DME directly to the database. So do many other Data Scientists. What I have repeatedly come across in this context is people hard-coding their passwords and access tokens into their analysis code. In my opinion, this is a dangerous practice! It is most likely in violation of the security regulations of your organisation, and for good reason. It is far too easy for your code to accidentally end up on an unrestricted access github repository, an unprotected S3 bucket, or similar. With GDPR just around the corner, a mistake like that could soon cost your organisation up to 3% of their global annual revenue in fines!
+Generally, I prefer to connect my DME directly to the database, as do many other Data Scientists. What I have repeatedly come across in this context is people hard-coding their passwords and access tokens into their analysis code. In my opinion, this is a dangerous practice! It is most likely in violation of the security regulations of your organisation, and for good reason. It is far too easy for your code to accidentally end up on an unrestricted access github repository, an unprotected S3 bucket, or similar. With GDPR just around the corner, a mistake like that could soon cost your organisation up to 3% of their global annual revenue in fines!
 
+### The Solution
 So what's the "proper" way to do this? Well, RStudio (v1.0+) offers some great new features in this context. If you are using Windows (like many big corporations do) and you are connecting to your EDW using the Windows ODBC Data Source Administrator, you can read your connection details directly from there using the "odbc" package.
 
-*Note: each code block below should be a chunk in an rMarkdown, rNotebook, or similar*
+*Note: each code block below should be a chunk in an rMarkdown*
 ```R
 # Unfortunately, odbc is not on CRAN yet.
 # So if you do not have it yet we will need devtools
