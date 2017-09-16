@@ -7,7 +7,7 @@ date:   2017-09-15 23:00:00
 categories: [coding, python, tools]
 tags: [coding, python, tools]
 ---
-**How to listen to your favourite podcast without podcast app**
+**How to listen to your favourite podcast without podcast app? These few lines of python might be able to help!**
 <!--more-->
 
 ### The Problem
