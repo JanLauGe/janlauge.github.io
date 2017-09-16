@@ -2,12 +2,12 @@
 layout: post
 comments: true
 excerpt_separator: <!--more-->
-title:  Old-fashioned Podcasts
+title:  Database Connections in rMarkdown
 date:   2017-09-15 23:00:00
 categories: [data-science, data-bases, R]
 tags: [data-science, data-bases, R]
 ---
-**Connecting your DME to an enterprise data warehouse? Do it properly and do not hard-code your passwords! Here is how you can do it in R with rMarkdown and RStudio version 1.0+**
+**Connecting R to an enterprise data warehouse? Do it properly and do not hard-code your passwords! Here is how you can do it in R with rMarkdown and RStudio version 1.0+**
 <!--more-->
 
 ### The Problem
@@ -37,9 +37,8 @@ con <- dbConnect(odbc::odbc(), 'EDW_name')
 Using this connection object, we can now write **and run** SQL code snippets in rMarkdowns, rNotebooks, and shiny apps. Just pass the connection as property to the snippet and specify an "output.var" that will capture the output. This "output.var" will be available in your R workspace afterwards.
 
 ```sql
-# This should be a chunk with the following header:
-#{SQL, connection = con, output.var = result}
-
+-- This should be a chunk with the following header:
+-- {SQL, connection = con, output.var = result}
 -- As a result, this turns into sql code.
 -- comments need to be marked accordingly
 SELECT TOP 10 * FROM EDW_database.EDW_table
