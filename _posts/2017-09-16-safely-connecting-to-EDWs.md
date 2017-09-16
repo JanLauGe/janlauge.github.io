@@ -20,33 +20,38 @@ Generally, I prefer to connect my DME directly to the database. So do many other
 
 So what's the "proper" way to do this? Well, RStudio (v1.0+) offers some great new features in this context. If you are using Windows (like many big corporations do) and you are connecting to your EDW using the Windows ODBC Data Source Administrator, you can read your connection details directly from there using the "odbc" package.
 
-```R
+Note:
+````R
+```
 # Unfortunately, odbc is not on CRAN yet.
 # So if you do not have it yet we will need devtools
 install.packages(devtools)
 
 # Using devtools, we can now install the odbc package
-devtools::install_github("rstats-db/odbc")
+devtools::install_github('rstats-db/odbc')
 
 # Get connection info from Windows ODBC Data Source Administrator
 # Using the name you set manually
 con <- dbConnect(odbc::odbc(), 'EDW_name')
 ```
+````
 
 Using this connection object, we can now write **and run** SQL code snippets in rMarkdowns, rNotebooks, and shiny apps. Just pass the connection as property to the snippet and specify an "output.var" that will capture the output. This "output.var" will be available in your R workspace afterwards.
 
-```SQL
-\`\`\`{sql connection = con, output.var = result}
+````SQL
+```{SQL, connection = con, output.var = result}
 -- This is sql code, comments need to be marked accordingly
-SELECT TOP 10 * FROM REST_BIW_ACC_MSTR_V.VW_B_LU_TILL_BANK_M
-\`\`\`
+SELECT TOP 10 * FROM EDW_database.EDW_table
 ```
+````
 
-```
-\`\`\`r
-# And the result is available in the next chunk!
+````R
+```{R}
+# "result" is available in the next chunk!
 result
-\`\`\`
 ```
+````
 
 This code has syntax highlighting, runs start to finish without any manual steps, does not rely on "hacky" string queries, does not have hard-coded passwords, and your data updates as and when new data becomes available in your EDW!
+
+As always, hope this is useful for someone. Please leave a comment below!
