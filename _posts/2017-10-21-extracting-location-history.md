@@ -69,6 +69,7 @@ our `GET` requests for `KML` file downloads.
 5. Paste the cURL string to a text editor and save it as a key file (I used '~/.env/.google_maps_cookie')
 
 Now that we have the cookie information, we can go back to the fun part in Python:
+
 ```Python
 import datetime as DT
 import process_location
