@@ -52,6 +52,7 @@ yearly and daily sub-setting functionality, so I added that in
 So how to use this? Here are the step-by-step instructions.
 
 In bash:
+
 ```bash
 # Create a project folder
 mkdir google_timeline
@@ -70,11 +71,11 @@ our `GET` requests for `KML` file downloads.
 
 Now that we have the cookie information, we can go back to the fun part in Python:
 
-```Python
+```python
 import datetime as DT
 import process_location
 
-# Get inputs--------------------------
+# Get inputs --------------------------
 # Date info
 today = DT.date.today()
 end_day = today.day
@@ -94,6 +95,7 @@ cookie_content = cookie_content[:-1]
 # Where to save the files
 folder = '~/google_timeline/data/'
 
+# Get files --------------------------
 process_location.create_kml_files(
     begin_year=begin_year,
     begin_month=begin_month,
@@ -104,6 +106,7 @@ process_location.create_kml_files(
     cookie_content=cookie_content,
     folder=folder)
 ```
+
 This will download the `KML` files (one per day) for the last week.
 I'll leave it at that for now. If you would like to know how to read the files
 into a pandas data frame, check out [Alexandre Attia's repo](https://github.com/alexattia/Maps-Location-History),
