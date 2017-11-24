@@ -30,6 +30,7 @@ blockquote {
   quotes: "\201C""\201D""\2018""\2019";
 }
 blockquote:before {
+	content:”\201C”;
   color: #ccc;
   content: open-quote;
   font-size: 4em;
@@ -39,6 +40,9 @@ blockquote:before {
 }
 blockquote p {
   display: inline;
+}
+blockquote:after {
+  content:”\201D”;
 }
 
 table {
