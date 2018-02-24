@@ -2,8 +2,8 @@
 layout: post
 comments: true
 excerpt_separator: <!--more-->
-title:  Location summaries
-date:   2018-02-24 09:00:00
+title:  Editable Plots from R to PowerPoint
+date:   2018-02-24 11:00:00
 categories: [DataScience, R, Visualisation]
 tags: [DataScience, R, Visualisation]
 ---
@@ -55,7 +55,7 @@ ggp <- diamonds %>%
         panel.grid.minor.x = element_blank()); ggp
 ```
 
-![Plot example]({{ site.url }}/assets/ppplot_example.png)
+![Plot example]({{ site.url }}/assets/ppplots_example.png)
 
 Now we can use `officer` to create a new PowerPoint document and
 `rvg::ph_with_vg` to drop our ggplot object in there.
@@ -82,4 +82,4 @@ find all ten edits that I made in the example.
 
 As always, hope this is helpful. And FYI, I am still looking for a way to
 achieve the same result using `Python`. If you know one, collect some bounty
-[here]{https://stackoverflow.com/questions/48944296/editable-plots-in-powerpoint-from-python-equivalent-of-officer-and-rvg}
+[here](https://stackoverflow.com/questions/48944296/editable-plots-in-powerpoint-from-python-equivalent-of-officer-and-rvg)
