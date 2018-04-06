@@ -7,11 +7,10 @@ date:   2018-02-24 11:00:00
 categories: [DataScience, R, Visualisation]
 tags: [DataScience, R, Visualisation]
 ---
-**Summary**
-This post is an event report and a quick walk through to a submission that I
+**This post is an event report and a quick walk through to a submission that I
 developed with a group of participants at an Alibaba / Met Office UK hackathon.
 We are using the A* algorithm with a couple of tweaks to route cargo balloons
-from London to a number of cities in the UK.
+from London to a number of cities in the UK.**
 <!--more-->
 
 In January of this year, the [Met Office](https://www.metoffice.gov.uk/) teamed
@@ -20,7 +19,8 @@ at [Huckletree Shoreditch](https://www.huckletree.com/locations/shoreditch).
 Here is a short video that gives a good impression of the event
 <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/bhsNmmdkZ7A?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
-# The Problem
+
+### The Problem
 > It’s the year 2050. The invention of anti-gravity engines has led to the
 creation of unmanned balloons that travel the UK, delivering goods. However,
 unpredictable weather conditions mean that these balloons are often delayed,
@@ -37,42 +37,23 @@ shortcoming: They crash when travelling in areas with high wind speeds.
 This is where the Met Office comes in. The task was to navigate balloons from
 origin to destination while avoiding storms by using the Met Office forecasts.
 
-# The Details
-> The objective of the contest is to develop an efficient navigation algorithm
-for cargo balloons while avoiding volatile weathers. In the future not so far
-away, propelled cargo balloons set out daily from Hyde Park London to 10
-destination cities in Britain. If the wind is too strong, cargo balloons
-will be destroyed in midair. As such, the flight paths of these balloons are
-planned before each flight, based on the weather forecast by the Met Office.  
-However, the weather forecast is usually 90~95% accurate. The Met Office runs
-10 different forecast models every day and these each results in slightly
-different forecasts each more or less correct.  Given the daily weather
-forecasts, the winning algorithm will chart the shortest while safe paths
-for cargo balloons.
 
->[the area is divided into blocks]. Each block is expressed by an x-axis
-coordinate and a y-axis coordinate (x,y), and we assume a constant air speed
-for cargo balloons under all weather conditions. The travel time across each
-block is fixed by two minutes and the balloons can move up, down, left, and
-right from the current block or stay at the current block,
-but cannot move diagonally.  
-
-> From 3:00 every morning, 10 propelled cargo balloons will set out from
-Hyde Park London to 10 destination cities in Britain in succession.
-The departure interval between each flight should be equal or greater than
-10 minutes and the travel duration is restricted to 18 hours [03:00-21:00).
-All propelled cargo balloons should arrive the destination before 21:00.
-Contestants are expected to forecast the weather condition of each (x,y)
-block so as to create the flight paths. For detailed data information,
-please refer to the next section. Wind velocity and rainfall are considered
-to cause flight crashes. When the wind velocity is ≥15.   
+### The Details
+I'll spare you the full run through of rules, terms, and conditions. You can
+find them on the competition page. The main facts:
+- forecast data provides projected wind speed for fields of a grid
+- forecasts are for hourly intervals
+- balloons can move up, down, left, right, or stay in place
+- balloons move one field per 2 minutes
+- balloons crash when entering a field when the wind speed is ≥15
 
 So the big question is: How do we safely get the balloons from origin to
 destination while avoiding stormy areas? I teamed up with a nice bunch of
 people, mostly undergrad or master level university students. It was great to
 see their enthusiasm for working on this problem!
 
-# The Data
+
+### The Data
 The data that was provided to us was:
 * the coordinates of cities (origin and destinations)
 * weather data, separated into:
@@ -86,7 +67,7 @@ in at a rather inconvenient file size of 2 x 800 MB, and download speeds were
 not that great either.
 
 
-# Weather Prediction
+### Weather Prediction
 We started by looking at the weather predictions. Our initial plan was to use
 the first week, for which both forecasts and observations were available, to
 train a classifier that would identify the likelihood of high wind speeds in a
@@ -123,7 +104,8 @@ data_cube = np.load('../data/5D_test.npy')
 forecast = convert_forecast(data_cube)
 ```
 
-# Balloon Navigation
+
+### Balloon Navigation
 We wanted balloons to take the shortest path from origin to destination without
 passing into storms. That means storms can be viewed as obstacles in our path
 search problem, because we would never, ever, want to pass through them, even
@@ -244,7 +226,8 @@ x = astar_3D(space=arr_world_big[:,:,:,0],
              destination_xy=destination)
 ```
 
-# Visualising the Results
+
+### Visualising the Results
 So we had a predicted optimal route now. That's great, but it would be even
 better to visualise these results in a way that allows us to develop some
 intuition about how our solution is doing and where we could improve it further.
