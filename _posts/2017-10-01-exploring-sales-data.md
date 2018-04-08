@@ -4,8 +4,8 @@ comments: true
 excerpt_separator: <!--more-->
 title:  Exploring Sales Data
 date:   2017-10-01 10:00:00
-categories: [data-science, interview-task, R]
-tags: [data-science, interview-task, R]
+categories: [DataScience, Recruiting, R]
+tags: [DataScience, Recruiting, R]
 ---
 **A big part of the interview process for many data science positions is a
 data science task or assignment. Companies usually choose a data set that is

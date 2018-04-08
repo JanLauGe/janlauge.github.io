@@ -3,6 +3,111 @@
   
     
     <url>
+      <loc>https://janlauge.github.io/2018/creating-editable-PowerPoint-plots-from-R/</loc>
+      
+        <lastmod>2018-02-24T11:00:00+00:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.5</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>https://janlauge.github.io/2018/hello-jekyll/</loc>
+      
+        <lastmod>2018-02-24T11:00:00+00:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.5</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>https://janlauge.github.io/2018/location-summaries/</loc>
+      
+        <lastmod>2018-01-28T09:00:00+00:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.5</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>https://janlauge.github.io/2017/extracting-location-history/</loc>
+      
+        <lastmod>2017-10-21T15:00:00+01:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.5</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>https://janlauge.github.io/2017/exploring-sales-data/</loc>
+      
+        <lastmod>2017-10-01T11:00:00+01:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.5</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>https://janlauge.github.io/2017/safely-connecting-to-EDWs/</loc>
+      
+        <lastmod>2017-09-16T00:00:00+01:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.5</priority>
+      
+    </url>
+    
+  
+    
+    <url>
+      <loc>https://janlauge.github.io/2017/old-fashioned-podcasts/</loc>
+      
+        <lastmod>2017-09-16T00:00:00+01:00</lastmod>
+      
+      
+        <changefreq>monthly</changefreq>
+      
+      
+        <priority>0.5</priority>
+      
+    </url>
+    
+  
+    
+    <url>
       <loc>https://janlauge.github.io/2017/hexplode-game-ai/</loc>
       
         <lastmod>2017-08-19T10:00:00+01:00</lastmod>
@@ -36,7 +141,7 @@
     <url>
       <loc>https://janlauge.github.io/about/</loc>
       
-        <lastmod>2017-08-19T17:15:33+01:00</lastmod>
+        <lastmod>2018-02-24T16:43:09+00:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -51,7 +156,7 @@
     <url>
       <loc>https://janlauge.github.io/categories/</loc>
       
-        <lastmod>2017-08-19T17:15:33+01:00</lastmod>
+        <lastmod>2018-02-24T16:43:09+00:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -66,7 +171,7 @@
     <url>
       <loc>https://janlauge.github.io/feed.xml</loc>
       
-        <lastmod>2017-08-19T17:15:33+01:00</lastmod>
+        <lastmod>2018-02-24T16:43:09+00:00</lastmod>
       
       
         <changefreq>monthly</changefreq>
@@ -83,7 +188,7 @@
     <url>
       <loc>https://janlauge.github.io/links/</loc>
       
-        <lastmod>2017-08-19T17:15:33+01:00</lastmod>
+        <lastmod>2018-02-24T16:43:09+00:00</lastmod>
       
       
         <changefreq>monthly</changefreq>

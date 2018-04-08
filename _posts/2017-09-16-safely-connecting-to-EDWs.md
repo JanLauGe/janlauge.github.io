@@ -4,8 +4,8 @@ comments: true
 excerpt_separator: <!--more-->
 title:  Database Connections in rMarkdown
 date:   2017-09-15 23:00:00
-categories: [data-science, data-bases, R]
-tags: [data-science, data-bases, R]
+categories: [DataScience, DataBases, R]
+tags: [DataScience, DataBases, R]
 ---
 **Connecting R to an enterprise data warehouse? Do it properly and do not hard-code your passwords! Here is how you can do it in R with rMarkdown and RStudio version 1.0+**
 <!--more-->

@@ -13,6 +13,13 @@ We are using the A* algorithm with a couple of tweaks to route cargo balloons
 from London to a number of cities in the UK.**
 <!--more-->
 
+> It’s the year 2050. The invention of anti-gravity engines has led to the
+creation of unmanned balloons that travel the UK, delivering goods. However,
+unpredictable weather conditions mean that these balloons are often delayed,
+damaged or even destroyed(!), so we need your help. We’re inviting you to join
+our contest AND our hackathon to create an algorithm which allows these balloons
+to get to their route safely and effectively.
+
 In January of this year, the [Met Office](https://www.metoffice.gov.uk/) teamed
 up with [Alibaba Cloud](https://www.alibabacloud.com/) in organising a hackathon
 at [Huckletree Shoreditch](https://www.huckletree.com/locations/shoreditch).
@@ -21,14 +28,7 @@ Here is a short video that gives a good impression of the event
 
 
 ### The Problem
-> It’s the year 2050. The invention of anti-gravity engines has led to the
-creation of unmanned balloons that travel the UK, delivering goods. However,
-unpredictable weather conditions mean that these balloons are often delayed,
-damaged or even destroyed(!), so we need your help. We’re inviting you to join
-our contest AND our hackathon to create an algorithm which allows these balloons
-to get to their route safely and effectively.
-
-The hackathon was organised a "Future Challenge", a fictitious scenario for
+The hackathon was organised as a "Future Challenge", a fictitious scenario for
 the year 2050. Obviously, drone delivery would be considered so 2020 and
 completely outdated by then. Instead, people are relying on anti-gravity
 balloons to deliver goods to cities across the UK via air drop.
@@ -37,8 +37,6 @@ shortcoming: They crash when travelling in areas with high wind speeds.
 This is where the Met Office comes in. The task was to navigate balloons from
 origin to destination while avoiding storms by using the Met Office forecasts.
 
-
-### The Details
 I'll spare you the full run through of rules, terms, and conditions. You can
 find them on the competition page. The main facts:
 - forecast data provides projected wind speed for fields of a grid
@@ -65,6 +63,11 @@ You should still be able to get the data [here](https://tianchi.aliyun.com/compe
 in case you'd like to have a go yourself. Note that the weather forecasts came
 in at a rather inconvenient file size of 2 x 800 MB, and download speeds were
 not that great either.
+
+See the map below for illustration purposes. The map shows gridded forecasts
+of wind speed for a one hour time slice, as well as city locations
+(origin in yellow, destinations in red).
+[Weather Forecast]({{ site.url }}/assets/astar_weatherdata.png)
 
 
 ### Weather Prediction
@@ -142,6 +145,8 @@ to always take a step forward in time by restricting the valid neighbours to
 `[..., ..., z+1]`. I tried to illustrate this schematically in the diagramm below:
 ![3D A* schematic]({{ site.url }}/assets/astar_3d_schematic.png)
 
+The code for my A* implementation in python using `heapq` can be found below.
+
 Note that I allow for neighbours that have the same x and y
 coordinates. This essentially allows balloons to "hover in place" to wait out
 unfavourable weather conditions in the area ahead, should that be the most
@@ -156,7 +161,6 @@ is still feasible to run this on your local machine and in the fast-paced
 setting of a hackathon I think that prioritising developer time over computing
 time was the right call.
 
-The code for my A* implementation in python using `heapq` can be found below.
 
 ```python
 import heapq
@@ -231,4 +235,59 @@ x = astar_3D(space=arr_world_big[:,:,:,0],
 So we had a predicted optimal route now. That's great, but it would be even
 better to visualise these results in a way that allows us to develop some
 intuition about how our solution is doing and where we could improve it further.
-I'll try to come back to this later to create some animation of balloon paths.
+I thought that an animation of the time slices with the paths generated would
+be ideal for this. So I used `matplotlib.pyplot` to create an image of each
+time slice and then combined them into an animated gif. Output and code below:
+
+![Conditions and routes for day 11]({{ site.url }}/assets/astar_animation_day11.gif)
+
+```python
+def plot_solution(world, cities, solution, day):
+    timesteps = list(range(0, 540, 30))
+    solution = solution.loc[solution.day == day,:]
+    # colour map for cities
+    cmap = plt.cm.cool
+    norm = matplotlib.colors.Normalize(vmin=1, vmax=10)
+    # colour map for weather
+    cm = matplotlib.colors.LinearSegmentedColormap.from_list('grid', [(1, 1, 1), (0.5, 0.5, 0.5)], N=2)
+
+    for t in timesteps:
+        timeslice = world[:,:,t]
+        moves_sofar = solution.loc[solution.z <= t,:]
+        moves_new = solution.loc[(t <= solution.z) & (solution.z <= t + 30),:]
+
+        if len(solution_subset) > 0:    
+            plt.figure(figsize=(5,5))
+            plt.imshow(timeslice[:,:].T, aspect='equal', cmap = cm)
+
+            # plot old moves
+            for city in moves_sofar.city.unique():
+                moves_sofar_city = moves_sofar.loc[moves_sofar.city == city,:]
+                x = moves_sofar_city.x
+                y = moves_sofar_city.y
+                z = moves_sofar_city.z
+                plt.plot(list(x), list(y), linestyle='-', color='black')
+
+            # plot new moves
+            for city in moves_new.city.unique():
+                moves_new_city = moves_new.loc[moves_new.city == city,:]
+                x = moves_new_city.x
+                y = moves_new_city.y
+                z = moves_new_city.z
+                plt.plot(list(x), list(y), linestyle='-', color=cmap(norm(city)))
+
+            # plot cities
+            for city,x,y in zip(cities.cid, cities.xid, cities.yid):
+                if city == 0:
+                    plt.scatter([x-1], [y-1], c='black')
+                else:
+                    # balloon still en-route?
+                    if city in moves_new.city.unique():
+                        plt.scatter([x-1], [y-1], c=cmap(norm(city)))
+                    else:
+                        plt.scatter([x-1], [y-1], c='black')
+
+            # save and display
+            plt.savefig('img_day' + str(day) + '_timestep_' + str(t) + '.png')
+            plt.show()
+```

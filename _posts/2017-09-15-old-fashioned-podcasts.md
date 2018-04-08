@@ -4,8 +4,8 @@ comments: true
 excerpt_separator: <!--more-->
 title:  Old-fashioned Podcasts
 date:   2017-09-15 23:00:00
-categories: [coding, python, tools]
-tags: [coding, python, tools]
+categories: [Coding, Python, Tools]
+tags: [Coding, Python, Tools]
 ---
 **How to listen to your favourite podcast without podcast app? These few lines of python might be able to help!**
 <!--more-->

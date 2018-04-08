@@ -11,7 +11,7 @@
 their tokens as means to take over enemy tokens. Over time, chain reactions become
 more and more common and as a result the game becomes difficult to predict.
 Here, I implement a ‘minimax’ algorithm to create a (very basic) computer
-player for this game</strong>
+player for this game. You can test your skills against it <a href="http://janlauge.pythonanywhere.com/">here</a></strong>
 
 ">
   <meta name="author" content="Laurens Geffert">
@@ -27,7 +27,7 @@ player for this game</strong>
 their tokens as means to take over enemy tokens. Over time, chain reactions become
 more and more common and as a result the game becomes difficult to predict.
 Here, I implement a ‘minimax’ algorithm to create a (very basic) computer
-player for this game</strong>
+player for this game. You can test your skills against it <a href="http://janlauge.pythonanywhere.com/">here</a></strong>
 
 ">
   
@@ -41,7 +41,7 @@ player for this game</strong>
 their tokens as means to take over enemy tokens. Over time, chain reactions become
 more and more common and as a result the game becomes difficult to predict.
 Here, I implement a ‘minimax’ algorithm to create a (very basic) computer
-player for this game</strong>
+player for this game. You can test your skills against it <a href="http://janlauge.pythonanywhere.com/">here</a></strong>
 
 ">
   <meta property="og:image" content="https://janlauge.github.io//images/favicons/favicon-194x194.png" />
@@ -66,7 +66,7 @@ player for this game</strong>
   <meta name="msapplication-TileImage" content="https://janlauge.github.io/images/favicons/mstile-144x144.png">
   <meta name="theme-color" content="#ffffff">
 
-  <link rel="stylesheet" href="https://janlauge.github.io/css/main.css?1503159333078529800">
+  <link rel="stylesheet" href="https://janlauge.github.io/css/main.css?1519490589156105000">
   <link rel="canonical" href="https://janlauge.github.iohttps://janlauge.github.io//2017/hexplode-game-ai/">
   <link rel="alternate" type="application/rss+xml" title="Laurens Geffert" href="https://janlauge.github.io/feed.xml">
 </head>
@@ -88,7 +88,7 @@ player for this game</strong>
           <h1 class="panel-cover__title panel-title">Laurens Geffert</h1>
         </a>
         <hr class="panel-cover__divider">
-        <p class="panel-cover__description">Personal webpage and blog - on data science and machine learning</p>
+        <p class="panel-cover__description">Data Science Portfolio</p>
         <hr class="panel-cover__divider panel-cover__divider--secondary">
 
         <div class="navigation-wrapper">
@@ -159,7 +159,7 @@ player for this game</strong>
         			  <!-- Kaggle -->
         			  <li class="navigation__item">
         				  <a href="https://www.kaggle.com/janlauge" title="janlauge on Kaggle" target="_blank">
-        				    <i class="icon icon-misc-trophy"></i>
+        				    <i class="icon icon-trophy"></i>
         				    <span class="label">Kaggle</span>
         				  </a>
         			  </li>
@@ -216,7 +216,7 @@ player for this game</strong>
     <div class="post-meta">
       <time datetime="19 Aug 2017" class="post-meta__date date">19 Aug 2017</time>
       
-      &#8226; <span class="post-meta__tags">on <a href="https://janlauge.github.io/tags/#python">python</a> <a href="https://janlauge.github.io/tags/#algorithms">algorithms</a> <a href="https://janlauge.github.io/tags/#games">games</a> </span>
+      &#8226; <span class="post-meta__tags">on <a href="https://janlauge.github.io/tags/#Python">Python</a> <a href="https://janlauge.github.io/tags/#Algorithms">Algorithms</a> <a href="https://janlauge.github.io/tags/#Games">Games</a> </span>
       
     </div>
     <h1 class="post-title">Hexplode Game AI</h1>
@@ -227,7 +227,7 @@ player for this game</strong>
 their tokens as means to take over enemy tokens. Over time, chain reactions become
 more and more common and as a result the game becomes difficult to predict.
 Here, I implement a ‘minimax’ algorithm to create a (very basic) computer
-player for this game</strong></p>
+player for this game. You can test your skills against it <a href="http://janlauge.pythonanywhere.com/">here</a></strong></p>
 
 <!--more-->
 
@@ -253,10 +253,11 @@ an <code class="highlighter-rouge">owner</code> (the ID of the player that owns 
 and a list of <code class="highlighter-rouge">neighbours</code> indicated by their respective <code class="highlighter-rouge">ID</code>s.</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code><span class="n">board</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="n">tile_3b</span> <span class="p">:</span> <span class="p">{</span><span class="n">score</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-               <span class="n">owner</span> <span class="p">:</span> <span class="s">'96196ce4df35aa7ed838'</span>
-               <span class="n">neighbours</span> <span class="p">:</span> <span class="p">[</span><span class="s">'2a'</span><span class="p">,</span> <span class="s">'2b'</span><span class="p">,</span><span class="s">'3a'</span><span class="p">,</span> <span class="s">'3c'</span><span class="p">,</span><span class="s">'4b'</span><span class="p">,</span> <span class="s">'4c'</span><span class="p">]}</span>
-    <span class="n">tile_3c</span> <span class="p">:</span> <span class="p">{</span><span class="o">...</span><span class="p">}</span>
+    <span class="o">&lt;</span><span class="n">tile</span> <span class="nb">id</span><span class="o">&gt;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">'counters'</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">number</span> <span class="n">of</span> <span class="n">counters</span> <span class="n">on</span> <span class="n">tile</span> <span class="ow">or</span> <span class="bp">None</span><span class="o">&gt;</span><span class="p">,</span>
+        <span class="s">'player'</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">player</span> <span class="nb">id</span> <span class="n">of</span> <span class="n">the</span> <span class="n">player</span> <span class="n">who</span> <span class="n">holds</span> <span class="n">the</span> <span class="n">tile</span> <span class="ow">or</span> <span class="bp">None</span><span class="o">&gt;</span><span class="p">,</span>
+        <span class="s">'neighbours'</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">list</span> <span class="n">of</span> <span class="n">ids</span> <span class="n">of</span> <span class="n">neighbouring</span> <span class="n">tile</span><span class="o">&gt;</span>
+    <span class="p">},</span>
     <span class="o">...</span>
 <span class="p">}</span>
 </code></pre>
@@ -280,7 +281,7 @@ value function (see diagram below).</p>
 
 <h3 id="board-state">Board State</h3>
 <p>Minimax is relatively straight-forward to implement. First, we need to be able to
-calculate future board states as a function of our moves. I created a function
+calculate future board states as a function of our moves. We create a function
 <code class="highlighter-rouge">AddCounter</code> for this, which uses a list of scores, the board shape, the id of the
 tile that the counter should be placed on, along with the player_id (the algorithm)
 and the current player (the one placing the counter, because we want to be able to
@@ -291,11 +292,7 @@ the tile will “hexplode”, distributing its counters to the neighbouring tile
 This, in turn, could trigger subsequent hexplodes on those neighbouring tiles,
 which would be handled by the respective recursions triggered by the function.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">AddCounter</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="n">BoardShape</span><span class="p">,</span> <span class="n">tile_id</span><span class="p">,</span> <span class="n">player_id</span><span class="p">,</span> <span class="n">player_current</span><span class="p">):</span>
-    <span class="s">"""Add a counter to the board and calculate
-    the new resulting board configuration"""</span>
-
-    <span class="c"># Check if the game is still going (both player and enemy have remaining token)</span>
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">AddCounter</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="n">board</span><span class="p">,</span> <span class="n">tile_id</span><span class="p">,</span> <span class="n">player_id</span><span class="p">,</span> <span class="n">player_current</span><span class="p">):</span>
     <span class="k">if</span> <span class="p">(</span><span class="bp">True</span> <span class="ow">in</span> <span class="p">[</span><span class="n">score</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">scores</span><span class="o">.</span><span class="n">values</span><span class="p">()])</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">True</span> <span class="ow">in</span> <span class="p">[</span><span class="n">score</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">scores</span><span class="o">.</span><span class="n">values</span><span class="p">()]):</span>
         <span class="c">#If player, counters are positive</span>
         <span class="k">if</span> <span class="n">player_current</span> <span class="o">==</span> <span class="n">player_id</span><span class="p">:</span>
@@ -309,24 +306,21 @@ which would be handled by the respective recursions triggered by the function.</
         <span class="c">#If placing counter on enemy tile, change and increase counters</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">counter</span> <span class="o">=</span> <span class="p">(</span><span class="n">scores</span><span class="p">[</span><span class="n">tile_id</span><span class="p">]</span> <span class="o">*</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">add</span>
-        <span class="c">#If the tile is full, hexplode (recursive)</span>
-        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">counter</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">BoardShape</span><span class="p">[</span><span class="n">tile_id</span><span class="p">][</span><span class="s">"neighbours"</span><span class="p">]):</span>
-            <span class="c"># Reset tile counter to zero</span>
+        <span class="c">#If field full, hexplode (recursive)</span>
+        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">counter</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">board</span><span class="p">[</span><span class="n">tile_id</span><span class="p">][</span><span class="s">"neighbours"</span><span class="p">]):</span>
             <span class="n">scores</span><span class="p">[</span><span class="n">tile_id</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="c"># Add one token to each neighbouring tile</span>
-            <span class="k">for</span> <span class="n">neighbour</span> <span class="ow">in</span> <span class="n">BoardShape</span><span class="p">[</span><span class="n">tile_id</span><span class="p">][</span><span class="s">"neighbours"</span><span class="p">]:</span>
-                <span class="n">scores</span> <span class="o">=</span> <span class="n">AddCounter</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="n">BoardShape</span><span class="p">,</span> <span class="n">neighbour</span><span class="p">,</span> <span class="n">player_id</span><span class="p">,</span> <span class="n">player_current</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">neighbour</span> <span class="ow">in</span> <span class="n">board</span><span class="p">[</span><span class="n">tile_id</span><span class="p">][</span><span class="s">"neighbours"</span><span class="p">]:</span>
+                <span class="n">scores</span> <span class="o">=</span> <span class="n">AddCounter</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="n">board</span><span class="p">,</span> <span class="n">neighbour</span><span class="p">,</span> <span class="n">player_id</span><span class="p">,</span> <span class="n">player_current</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">scores</span><span class="p">[</span><span class="n">tile_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">counter</span>
         <span class="k">return</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
-
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
 </code></pre>
 </div>
 
 <h3 id="growing-trees">Growing Trees</h3>
-<p>Now that we can calculate potential future board states, we can use this to
+<p>Now that we can calculate and evaluate potential future board states, we can use this to
 create a tree of move scenarios. A given board state allows for a number of moves
 (“place a marker on any tile that is not an enemy tile”). When it is our turn,
 we can make <code class="highlighter-rouge">n_1</code> valid moves resulting in <code class="highlighter-rouge">n_1</code> possible board states. Using
@@ -335,51 +329,45 @@ conditions for a maximum depth (<code class="highlighter-rouge">n_i</code>) and/
 (one player looses all counters).</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Node</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="s">"""Single node in the tree of potential moves.
-    Represented by a particular board configuration (node_scores)"""</span>
 
-      <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">BoardShape</span><span class="o">=</span><span class="nb">dict</span><span class="p">(),</span> <span class="n">player_id</span><span class="o">=</span><span class="nb">int</span><span class="p">(),</span>
-      <span class="n">node_player</span><span class="o">=</span><span class="nb">int</span><span class="p">(),</span> <span class="n">node_scores</span><span class="o">=</span><span class="nb">dict</span><span class="p">(),</span> <span class="n">node_depth</span><span class="o">=</span><span class="nb">int</span><span class="p">(),</span> <span class="n">node_move</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">board</span><span class="p">,</span> <span class="n">player_id</span><span class="p">,</span> <span class="n">player_current</span><span class="p">,</span> <span class="n">scores</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">move</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">player_current</span> <span class="o">=</span> <span class="n">player_current</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">move</span> <span class="o">=</span> <span class="n">move</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scores</span> <span class="o">=</span> <span class="n">scores</span>
 
-          <span class="c"># Set node properties</span>
-          <span class="bp">self</span><span class="o">.</span><span class="n">BoardShape</span> <span class="o">=</span> <span class="n">BoardShape</span>
-          <span class="bp">self</span><span class="o">.</span><span class="n">player_id</span> <span class="o">=</span> <span class="n">player_id</span>
-          <span class="bp">self</span><span class="o">.</span><span class="n">node_player</span> <span class="o">=</span> <span class="n">node_player</span>
-          <span class="bp">self</span><span class="o">.</span><span class="n">node_scores</span> <span class="o">=</span> <span class="n">node_scores</span>
-          <span class="bp">self</span><span class="o">.</span><span class="n">node_depth</span> <span class="o">=</span> <span class="n">node_depth</span>
-          <span class="bp">self</span><span class="o">.</span><span class="n">node_value</span> <span class="o">=</span> <span class="n">CalculateValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node_scores</span><span class="p">,</span> <span class="n">BoardShape</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">player_id</span><span class="p">)</span>
-          <span class="bp">self</span><span class="o">.</span><span class="n">node_move</span> <span class="o">=</span> <span class="n">node_move</span>
-          <span class="bp">self</span><span class="o">.</span><span class="n">node_children</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c">#Check if game is over</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">True</span> <span class="ow">in</span> <span class="p">[</span><span class="n">score</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">score</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">scores</span><span class="o">.</span><span class="n">values</span><span class="p">()])</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">True</span> <span class="ow">in</span> <span class="p">[</span><span class="n">score</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">score</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">scores</span><span class="o">.</span><span class="n">values</span><span class="p">()]):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">depth</span> <span class="o">=</span> <span class="n">depth</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">depth</span> <span class="o">=</span> <span class="mi">0</span>
 
-          <span class="c">#Prefix to use with scores</span>
-          <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node_player</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">player_id</span><span class="p">):</span>
-              <span class="bp">self</span><span class="o">.</span><span class="n">prefix</span> <span class="o">=</span> <span class="mi">1</span>
-          <span class="k">else</span><span class="p">:</span>
-              <span class="bp">self</span><span class="o">.</span><span class="n">prefix</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="c">#If this is not a terminal node, generate the children</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c">#Prefix for use with score</span>
+            <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">player_current</span> <span class="o">==</span> <span class="n">player_id</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">prefix</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">prefix</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">children</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">CreateChildren</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
 
-          <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_value</span> <span class="o">==</span> <span class="n">maxsize</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_value</span> <span class="o">==</span> <span class="o">-</span><span class="n">maxsize</span><span class="p">:</span>
-              <span class="bp">self</span><span class="o">.</span><span class="n">node_depth</span> <span class="o">=</span> <span class="mi">0</span>
-          <span class="k">else</span><span class="p">:</span>
-              <span class="bp">self</span><span class="o">.</span><span class="n">node_depth</span> <span class="o">=</span> <span class="n">node_depth</span>
+        <span class="c">#If this is terminal node, calculate value</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c">#Get Value</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">CalculateValue</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="n">player_id</span><span class="p">)</span>
 
-          <span class="c"># If max depth is not reached yet, create node children    </span>
-          <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_depth</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-              <span class="bp">self</span><span class="o">.</span><span class="n">CreateChildren</span><span class="p">()</span>
-
-      <span class="k">def</span> <span class="nf">CreateChildren</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-          <span class="s">"""Create one child node for each possible move in the board state
-          of this node and calculate their board configuration"""</span>
-          <span class="k">for</span> <span class="n">tile_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_scores</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-              <span class="k">if</span> <span class="p">((</span><span class="n">scores</span><span class="p">[</span><span class="n">tile_id</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">))</span> <span class="ow">or</span> <span class="p">((</span><span class="n">scores</span><span class="p">[</span><span class="n">tile_id</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)):</span>
-                  <span class="n">future_scores</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node_scores</span><span class="p">)</span>
-                  <span class="n">future_scores</span> <span class="o">=</span> <span class="n">AddCounter</span><span class="p">(</span><span class="n">future_scores</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">BoardShape</span><span class="p">,</span> <span class="n">tile_id</span><span class="p">,</span> <span class="n">player_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_player</span><span class="p">)</span>
-                  <span class="bp">self</span><span class="o">.</span><span class="n">node_children</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Node</span><span class="p">(</span>
-                      <span class="bp">self</span><span class="o">.</span><span class="n">BoardShape</span><span class="p">,</span>
-                      <span class="bp">self</span><span class="o">.</span><span class="n">player_id</span><span class="p">,</span>
-                      <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node_player</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span><span class="p">,</span>
-                      <span class="n">future_scores</span><span class="p">,</span>
-                      <span class="bp">self</span><span class="o">.</span><span class="n">node_depth</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
-                      <span class="n">tile_id</span><span class="p">))</span>
+    <span class="k">def</span> <span class="nf">CreateChildren</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scores</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">tile_id</span> <span class="ow">in</span> <span class="n">scores</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="p">((</span><span class="n">scores</span><span class="p">[</span><span class="n">tile_id</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">))</span> <span class="ow">or</span> <span class="p">((</span><span class="n">scores</span><span class="p">[</span><span class="n">tile_id</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prefix</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)):</span>
+                <span class="n">future_scores</span> <span class="o">=</span> <span class="n">copy</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
+                <span class="n">future_scores</span> <span class="o">=</span> <span class="n">AddCounter</span><span class="p">(</span><span class="n">future_scores</span><span class="p">,</span> <span class="n">board</span><span class="p">,</span> <span class="n">tile_id</span><span class="p">,</span> <span class="n">player_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">player_current</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Node</span><span class="p">(</span>
+                    <span class="n">board</span><span class="p">,</span>
+                    <span class="n">player_id</span><span class="p">,</span>
+                    <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">player_current</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span><span class="p">,</span>
+                    <span class="n">future_scores</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">depth</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+                    <span class="n">tile_id</span><span class="p">))</span>
 </code></pre>
 </div>
 
@@ -407,7 +395,40 @@ that we have on the board, minus the number of enemy markers. If for a given
 board state we’re in the lead, the number will be positive. If we’re behind,
 the number will be negative.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">CalculateScores</span><span class="p">(</span><span class="n">board</span><span class="p">,</span> <span class="n">player_id</span><span class="p">):</span>
+    <span class="n">scores</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">tile_id</span><span class="p">,</span> <span class="n">tile</span> <span class="ow">in</span> <span class="n">board</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">tile</span><span class="p">[</span><span class="s">"player"</span><span class="p">]</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">scores</span><span class="p">[</span><span class="n">tile_id</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">elif</span> <span class="n">tile</span><span class="p">[</span><span class="s">"player"</span><span class="p">]</span> <span class="o">==</span> <span class="n">player_id</span><span class="p">:</span>
+            <span class="n">scores</span><span class="p">[</span><span class="n">tile_id</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">tile</span><span class="p">[</span><span class="s">"counters"</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">tile</span><span class="p">[</span><span class="s">"player"</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">player_id</span><span class="p">:</span>
+            <span class="n">scores</span><span class="p">[</span><span class="n">tile_id</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">tile</span><span class="p">[</span><span class="s">"counters"</span><span class="p">])</span> <span class="o">*</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">CalculateValue</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="n">player_id</span><span class="p">):</span>
+    <span class="s">"""Heuristic value function to estimate how favourable
+    the given board state is for the player"""</span>
+
+    <span class="c"># count counters</span>
+    <span class="n">OwnCounters</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">EnemyCounters</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">tile_id</span> <span class="ow">in</span> <span class="n">scores</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">scores</span><span class="p">[</span><span class="n">tile_id</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">OwnCounters</span> <span class="o">+=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">scores</span><span class="p">[</span><span class="n">tile_id</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">scores</span><span class="p">[</span><span class="n">tile_id</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">EnemyCounters</span> <span class="o">+=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">scores</span><span class="p">[</span><span class="n">tile_id</span><span class="p">])</span>
+    <span class="c"># Check for game-over</span>
+    <span class="k">if</span> <span class="n">OwnCounters</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="c">#Lost</span>
+        <span class="k">return</span><span class="p">(</span><span class="o">-</span><span class="n">maxsize</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">EnemyCounters</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="c">#Won</span>
+        <span class="k">return</span><span class="p">(</span><span class="n">maxsize</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">OwnCounters</span> <span class="o">-</span> <span class="n">EnemyCounters</span>
+        <span class="k">return</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 </code></pre>
 </div>
 
@@ -421,21 +442,21 @@ take the node tree object we created as an input variable.</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">Maxvalue</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
     <span class="s">"""Function to identify most advantageous player move"""</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">node_depth</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">node</span><span class="o">.</span><span class="n">node_value</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">depth</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">node</span><span class="o">.</span><span class="n">value</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">best_value</span> <span class="o">=</span> <span class="o">-</span><span class="n">maxsize</span>
-        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">node_children</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">children</span><span class="p">:</span>
             <span class="n">best_value</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">best_value</span><span class="p">,</span> <span class="n">Minvalue</span><span class="p">(</span><span class="n">child</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">best_value</span>
 
 <span class="k">def</span> <span class="nf">Minvalue</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
     <span class="s">"""Function to identify most likely enemy move"""</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">node_depth</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">node</span><span class="o">.</span><span class="n">node_value</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">depth</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">node</span><span class="o">.</span><span class="n">value</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">best_value</span> <span class="o">=</span> <span class="n">maxsize</span>
-        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">node_children</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">children</span><span class="p">:</span>
             <span class="n">best_value</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">best_value</span><span class="p">,</span> <span class="n">Maxvalue</span><span class="p">(</span><span class="n">child</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">best_value</span>
 </code></pre>
@@ -451,15 +472,30 @@ evaluating the future scenarios.</p>
 
 <div class="highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">Minimax</span><span class="p">(</span><span class="n">board</span><span class="p">,</span> <span class="n">game_id</span><span class="p">,</span> <span class="n">player_id</span><span class="p">):</span>
 
-    <span class="c"># Create tree of potential future board configurations</span>
-    <span class="n">nodes</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="n">BoardShape</span><span class="p">,</span> <span class="n">player_id</span><span class="p">,</span> <span class="n">player_id</span><span class="p">,</span> <span class="n">scores</span><span class="p">,</span> <span class="n">depth</span><span class="p">)</span>
-    <span class="n">possible_moves</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="c"># Call recursive MiniMax functions for each child</span>
-    <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">nodes</span><span class="o">.</span><span class="n">node_children</span><span class="p">:</span>
-        <span class="n">possible_moves</span><span class="p">[</span><span class="n">child</span><span class="o">.</span><span class="n">node_move</span><span class="p">]</span> <span class="o">=</span> <span class="n">Minvalue</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
+  <span class="c"># Run algorithm</span>
+  <span class="n">depth</span> <span class="o">=</span> <span class="mi">3</span>
+  <span class="n">scores</span> <span class="o">=</span> <span class="n">CalculateScores</span><span class="p">(</span><span class="n">board</span><span class="p">,</span> <span class="n">player_id</span><span class="p">)</span>
+  <span class="n">moves</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="nb">abs</span><span class="p">(</span><span class="n">score</span><span class="p">)</span> <span class="k">for</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">scores</span><span class="o">.</span><span class="n">values</span><span class="p">()])</span>
 
-    <span class="n">best_move</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">possible_moves</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="n">possible_moves</span><span class="p">[</span><span class="n">k</span><span class="p">]))</span>
-    <span class="k">return</span> <span class="n">best_move</span>
+  <span class="c"># If the game is only starting, pick first tile</span>
+  <span class="k">if</span> <span class="n">moves</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+      <span class="n">possible_moves</span> <span class="o">=</span> <span class="p">{}</span>
+      <span class="k">for</span> <span class="n">tile_id</span><span class="p">,</span> <span class="n">tile</span> <span class="ow">in</span> <span class="n">board</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+          <span class="k">if</span> <span class="n">tile</span><span class="p">[</span><span class="s">"player"</span><span class="p">]</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+              <span class="n">possible_moves</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tile</span><span class="p">[</span><span class="s">"neighbours"</span><span class="p">]),</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tile_id</span><span class="p">)</span>
+      <span class="c"># Pick the moves closest to an explosion</span>
+      <span class="n">best_move</span> <span class="o">=</span> <span class="n">possible_moves</span><span class="p">[</span><span class="nb">min</span><span class="p">(</span><span class="n">possible_moves</span><span class="p">)][</span><span class="mi">2</span><span class="p">]</span>
+
+      <span class="k">return</span> <span class="n">best_move</span>
+
+  <span class="k">else</span><span class="p">:</span>
+      <span class="n">node_tree</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="n">board</span><span class="p">,</span> <span class="n">player_id</span><span class="p">,</span> <span class="n">player_id</span><span class="p">,</span> <span class="n">scores</span><span class="p">,</span> <span class="n">depth</span><span class="p">)</span>
+      <span class="n">candidate_moves</span> <span class="o">=</span> <span class="p">{}</span>
+      <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">node_tree</span><span class="o">.</span><span class="n">children</span><span class="p">:</span>
+          <span class="n">candidate_moves</span><span class="p">[</span><span class="n">child</span><span class="o">.</span><span class="n">move</span><span class="p">]</span> <span class="o">=</span> <span class="n">Minvalue</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
+      <span class="n">best_move</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">candidate_moves</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="n">candidate_moves</span><span class="p">[</span><span class="n">k</span><span class="p">]))</span>
+
+      <span class="k">return</span> <span class="n">best_move</span>
 </code></pre>
 </div>
 
@@ -474,32 +510,39 @@ this post in general. Thanks to Man AHL for hosting this interesting challenge!<
   <section id="disqus_thread"></section><!-- /#disqus_thread -->
 </article>
 
-    <script type="text/javascript">
-      var disqus_config = function () {
-        this.page.url = 'https://janlauge.github.io/2017/hexplode-game-ai/';  // Replace PAGE_URL with your page's canonical URL variable
-        this.page.identifier = '/2017/hexplode-game-ai'; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-      };
-
-      (function() { // DON'T EDIT BELOW THIS LINE
+<div id="disqus_thread"></div>
+<script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+     */
+    /*
+    var disqus_config = function () {
+        this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() {  // DON'T EDIT BELOW THIS LINE
         var d = document, s = d.createElement('script');
-        s.src = '//janlauge.disqus.com.disqus.com/embed.js';
+
+        s.src = 'https://janlauge.disqus.com/embed.js';
+
         s.setAttribute('data-timestamp', +new Date());
         (d.head || d.body).appendChild(s);
-       })();
-    </script>
-    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 
 
 
       </div>
 
       <footer class="footer">
-  <span class="footer__copyright">&copy; 2017 Laurens Geffert. All rights reserved.</span>
+  <span class="footer__copyright">&copy; 2018 Laurens Geffert. All rights reserved.</span>
 </footer>
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script type="text/javascript" src="https://janlauge.github.io/js/main.js?1503159333078529800"></script>
+<script type="text/javascript" src="https://janlauge.github.io/js/main.js?1519490589156105000"></script>
 
 
     </div>

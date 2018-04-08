@@ -4,8 +4,8 @@ comments: true
 excerpt_separator: <!--more-->
 title:  Hexplode Game AI
 date:   2017-08-19 09:00:00
-categories: [python, algorithms, games]
-tags: [python, algorithms, games]
+categories: [Python, Algorithms, Games]
+tags: [Python, Algorithms, Games]
 ---
 **The game hexplode lets two players fight one another using exploding stacks of
 their tokens as means to take over enemy tokens. Over time, chain reactions become

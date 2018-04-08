@@ -2,18 +2,31 @@
 layout: post
 comments: true
 excerpt_separator: <!--more-->
-title:  Extracting location history
-date:   2017-10-21 14:00:00
-categories: [DataScience, Python, WebScraping, Coding, Tools]
-tags: [DataScience, Python, WebScraping, Coding, Tools]
+title:  Location summaries
+date:   2018-01-28 09:00:00
+categories: [DataScience, Python, WebScraping, QuantifiedSelf]
+tags: [DataScience, Python, WebScraping, QuantifiedSelf]
 ---
-**If you have an android phone then google logs your location.
-Fortunately, it makes all of that data available to you via the "timeline" dashboard.
-Unfortunately, there is no easy way to get it off there and into an IDE.
-So we'll have to do this the hard way!**
+**In a previous post I showed how to extract your location history from your
+google account. Here, I use the retrieved data to set up automated reporting
+and summaries**
 <!--more-->
 
-## Location History
+## Motivation
+Last year I explained how you can use python web scraping techniques to extract
+your google location history in a machine-readable format. In reality, however,
+this is only the first step. Let's face it, instead of sitting down and running
+the code you could just look at the fancy web dashboard provided by Google. The
+real opportunity in having a programmatic way to extract your location data is
+that it allows you to set up automated reporting on top of it.
+
+Here, we will use the code from the previous post and use it to set up a "chron
+job" that gets my weekly location history, extracts the amount of time I spent
+at work, and emails it to me every Friday so that I can use it when filling out
+my time sheets.
+
+
+## Background
 What did you do yesterday? Last week? Or on August the 17th at 15:00?
 The answer, at least to the last question, possibly used to be quite a stretch.
 But as many things, this has changed with the advent of our everyday companion,
@@ -54,6 +67,8 @@ So how to use this? Here are the step-by-step instructions.
 In bash:
 
 ```bash
+# Create a project folder
+mkdir google_timeline
 # Clone the code repository
 git clone https://github.com/JanLauGe/c_google_timeline
 ```
@@ -63,7 +78,7 @@ from our google account sign in, saved in our cookies, in order to authenticate
 our `GET` requests for `KML` file downloads.
 1. Open https://www.google.com/maps/timeline in Mozilla Firefox (I tried Chrome first, it did not work for me)
 2. Inspect the page (`Ctrl + Shift + I`) and go to the Network tab
-3. Enter the link below in the address line of your browser: https://www.google.com/maps/timeline/kml
+3. Enter the link below in the address line of your browser: https://www.google.com/maps/timeline/kml?authuser=0&pb=!1m8!1m3!1i2017!2i3!3i16!2m3!1i2017!2i3!3i16
 4. A new event will appear in the inspect-network tab as a result of the request. Copy its content as a cURL
 5. Paste the cURL string to a text editor and save it as a key file (I used '~/.env/.google_maps_cookie')
 
