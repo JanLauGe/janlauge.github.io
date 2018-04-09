@@ -26,7 +26,6 @@ at [Huckletree Shoreditch](https://www.huckletree.com/locations/shoreditch).
 Here is a short video that gives a good impression of the event
 <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/bhsNmmdkZ7A?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 
-
 ### The Problem
 The hackathon was organised as a "Future Challenge", a fictitious scenario for
 the year 2050. Obviously, drone delivery would be considered so 2020 and
@@ -50,14 +49,13 @@ destination while avoiding stormy areas? I teamed up with a nice bunch of
 people, mostly undergrad or master level university students. It was great to
 see their enthusiasm for working on this problem!
 
-
 ### The Data
 The data that was provided to us was:
-* the coordinates of cities (origin and destinations)
-* weather data, separated into:
-1. a training set with 7 days of weather forecasts from 10 models plus
-observations of the actual conditions that manifested on these days
-2. a holdout set with 5 days of weather forecasts
+1. the coordinates of cities (origin and destinations)
+1. weather data, separated into:
+&nbsp;&nbsp;&nbsp;&nbsp;* a training set with 7 days of weather forecasts from
+10 models plus observations of the actual conditions that manifested on these days
+&nbsp;&nbsp;&nbsp;&nbsp;* a holdout set with 5 days of weather forecasts
 
 You should still be able to get the data [here](https://tianchi.aliyun.com/competition/information.htm?spm=5176.100069.5678.2.7c1024fbV8ArTb&raceId=231622)
 in case you'd like to have a go yourself. Note that the weather forecasts came
@@ -68,7 +66,6 @@ See the map below for illustration purposes. The map shows gridded forecasts
 of wind speed for a one hour time slice, as well as city locations
 (origin in yellow, destinations in red).
 [Weather Forecast]({{ site.url }}/assets/astar_weatherdata.png)
-
 
 ### Weather Prediction
 We started by looking at the weather predictions. Our initial plan was to use
@@ -106,7 +103,6 @@ data_cube = np.load('../data/5D_test.npy')
 # convert forecast to world array
 forecast = convert_forecast(data_cube)
 ```
-
 
 ### Balloon Navigation
 We wanted balloons to take the shortest path from origin to destination without
@@ -160,7 +156,6 @@ time step). As a result, computation becomes a lot more resource intense, but it
 is still feasible to run this on your local machine and in the fast-paced
 setting of a hackathon I think that prioritising developer time over computing
 time was the right call.
-
 
 ```python
 import heapq
@@ -230,9 +225,8 @@ x = astar_3D(space=arr_world_big[:,:,:,0],
              destination_xy=destination)
 ```
 
-
 ### Visualising the Results
-So we had a predicted optimal route now. That's great, but it would be even
+We have a predicted optimal route now. That's great, but it would be even
 better to visualise these results in a way that allows us to develop some
 intuition about how our solution is doing and where we could improve it further.
 I thought that an animation of the time slices with the paths generated would
@@ -240,6 +234,13 @@ be ideal for this. So I used `matplotlib.pyplot` to create an image of each
 time slice and then combined them into an animated gif. Output and code below:
 
 ![Conditions and routes for day 11]({{ site.url }}/assets/astar_animation_day11.gif)
+
+You can see that, for this day, the solution for most cities is relatively
+straight-forward because of low wind speeds in the majority of the area.
+However, the A* pathfinding algorithm can be seen nicely at work in the later
+timeslices and the centre-right of the map, where the purple balloon pauses
+for a timeslice to wait out unfavourable conditions ahead and then winds around
+patches of high wind speed towards its target.
 
 ```python
 def plot_solution(world, cities, solution, day):
