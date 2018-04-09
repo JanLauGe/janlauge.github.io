@@ -3,7 +3,7 @@ layout: post
 comments: true
 excerpt_separator: <!--more-->
 title:  Airdrop delivery with A* pathfinding
-date:   2018-02-24 11:00:00
+date:   2018-04-06 18:00:00
 categories: [DataScience, R, Visualisation]
 tags: [DataScience, R, Visualisation]
 ---
