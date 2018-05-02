@@ -176,20 +176,22 @@ learn.lr_find()
 learn.sched.plot_lr()
 ```
 
-[learning rate finder]({{ site.url }}/assets/fastai1_learningratefinder.png)
+(learning rate finder)[{{ site.url }}/assets/fastai1_learningratefinder.png]
 
 ```python
 learn.fit(0.01, 5)
 ```
 
-> epoch      trn_loss   val_loss   accuracy                   
-    0      0.435999   0.267501   0.925     
-    1      0.3081     0.29459    0.9                        
-    2      0.2548     0.235716   0.925                      
-    3      0.214654   0.229093   0.93125                   
-    4      0.237024   0.162347   0.9375  
+| epoch | trn_loss | val_loss | accuracy |
+| ----- | -------- | -------- | -------- |
+|     0 | 0.435999 | 0.267501 | 0.925    |
+|     1 | 0.3081   | 0.29459  | 0.9      |                 
+|     2 | 0.2548   | 0.235716 | 0.925    |                 
+|     3 | 0.214654 | 0.229093 | 0.93125  |                
+|     4 | 0.237024 | 0.162347 | 0.9375   |
 
-Really nice results already! Let's see if we can improve things even further.
+Over 93% accuracy! Really nice results already!
+Let's see if we can improve things even further.
 
 **Train a Second Model**
 
@@ -218,14 +220,15 @@ cm = confusion_matrix(data.val_y, preds)
 plot_confusion_matrix(cm, data.classes)
 ```
 
-[confusion matrix]({{ site.url }}/assets/fastai1_confusionmatrix.png)
+(confusion matrix)[{{ site.url }}/assets/fastai1_confusionmatrix.png]
 
 We should also plot some of the images to develop an intuition about where
 our classifier does well and where it doesn't. Here is the one misclassified
 dolphin and the top 4 misclassified sharks:
 
-[misclassified dolphin]({{ site.url }}/assets/fastai1_missclass_dolphin1.png)
-[misclassified sharks]({{ site.url }}/assets/fastai1_missclass_shark1.png)
+(misclassified dolphin)[{{ site.url }}/assets/fastai1_missclass_dolphin1.png]
+
+(misclassified sharks)[{{ site.url }}/assets/fastai1_missclass_shark1.png]
 
 ## Discussion
 
