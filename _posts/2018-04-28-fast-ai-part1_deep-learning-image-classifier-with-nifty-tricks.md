@@ -24,8 +24,8 @@ research and make them into a collection of intelligent default settings.
 Lesson 2 outlined the fundamentals of computer vision and building image
 classification models. My homework: get my hands on my own image dataset and
 use it to train a classifier myself. I chose to attempt a classifier that can
-distinguish between sharks and dolphins. Read along for a detailed walk through
-below.
+distinguish between sharks and dolphins, using images from google image search.
+Read along for a detailed walk through below.
 
 ## Getting an Image Dataset
 
@@ -47,8 +47,10 @@ notebooks. Changing ownership of the file with
 `chmod 777  /usr/local/bin/chromedriver`
 solved this for me.
 
-Now we can run a query for images. Results are named as number in result plus
-original file name, downloaded, and saved locally.
+Now we can run a query for images. Results are named as the number of the result
+plus the original file name, downloaded, and saved locally. Note that you
+should make sure to utilise the `usage_rights` flag in order to get images
+that are cleared for this type of use.
 
 ```python
 from google_images_download import google_images_download
@@ -85,10 +87,13 @@ folders = ['data/sharksdolphins/train/shark/',
 [image_rename_all(folder) for folder in folders]
 ```
 
+The above query returned about 800 images each. I ended up speeding through
+these images manually and removing unsuitable images manually.
+
 We need a training and a validation set. Making this work with fast.ai is easily
 done by adapting the recommended folder structure of a `data` folder with two
 sub-folders (`train` and `valid`), each of which have a subfolder with images
-for each image class / label.
+for each class.
 
 The code chunk below takes the images downloaded earlier and randomly splits
 them into 80% training data and 20% validation data. Don't forget to set a
@@ -126,9 +131,9 @@ abstractions provided by fast.ai
 ## Training a Model
 
 Now we can finally start to train our image classifier. I am using a
-(paperspace)[] instance with the (setup)[]
-recommended and provided by
-(fast.ai)[].
+[paperspace](https://www.paperspace.com/console/machines) instance with the
+[setup](https://github.com/reshamas/fastai_deeplearn_part1/blob/master/tools/paperspace.md)
+recommended and provided by (fast.ai)[http://course.fast.ai/start.html].
 
 **Train a First Model**
 
@@ -182,7 +187,7 @@ learn.sched.plot_lr()
 learn.fit(0.01, 5)
 ```
 
-| epoch | trn_loss &nbsp;&nbsp; | val_loss &nbsp;&nbsp; | accuracy &nbsp;&nbsp; |
+| epoch &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | trn_loss &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | val_loss &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | accuracy |
 | ----- | ---------- | ---------- | ---------- |
 |     0 | 0.435999   | 0.267501   | 0.925      |
 |     1 | 0.3081     | 0.29459    | 0.9        |                 
@@ -190,7 +195,9 @@ learn.fit(0.01, 5)
 |     3 | 0.214654   | 0.229093   | 0.93125    |                
 |     4 | 0.237024   | 0.162347   | 0.9375     |
 
+
 Over 93% accuracy! Really nice results already!
+
 Let's see if we can improve things even further.
 
 **Train a Second Model**
@@ -202,19 +209,23 @@ terminology, as it implies the differential learning rates with fast-changing
 weights at the last layer but slower updates in the lower layers.
 
 ```python
+# unfreeze pretrained layers
 learn.unfreeze()
+# set differential learning rate
 lr = np.array([1e-4,1e-3,1e-2])
+# train new model
 learn.fit(lr, 3, cycle_len=1, cycle_mult=2)
 ```
 
 Let's look at some of the results:
 
 ```python
+# get predictions and transform to class probability values
 log_preds = learn.predict()
 preds = np.argmax(log_preds, axis=1)
 probs = np.exp(log_preds[:,1])
 
-# confusion matrix
+# plot confusion matrix
 from sklearn.metrics import confusion_matrix
 cm = confusion_matrix(data.val_y, preds)
 plot_confusion_matrix(cm, data.classes)
@@ -226,9 +237,9 @@ We should also plot some of the images to develop an intuition about where
 our classifier does well and where it doesn't. Here is the one misclassified
 dolphin and the top 4 misclassified sharks:
 
-![misclassified dolphin]({{ site.url }}/assets/fastai1_missclass_dolphin1.png)
+![misclassified dolphin]({{ site.url }}/assets/fastai1_misclass_dolphin1.png)
 
-![misclassified sharks]({{ site.url }}/assets/fastai1_missclass_shark1.png])
+![misclassified sharks]({{ site.url }}/assets/fastai1_misclass_shark1.png])
 
 ## Discussion
 
