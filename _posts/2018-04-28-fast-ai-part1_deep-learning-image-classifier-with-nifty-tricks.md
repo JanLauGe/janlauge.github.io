@@ -2,7 +2,7 @@
 layout: post
 comments: true
 excerpt_separator: <!--more-->
-title:  fast.ai Deep Learning Image Classification
+title:  fastai Deep Learning Image Classification
 date:   2018-05-02 08:00:00
 categories: [DataScience, Python, DeepLearning]
 tags: [DataScience, Python, DeepLearning]
