@@ -2,18 +2,19 @@
 layout: post
 comments: true
 excerpt_separator: <!--more-->
-title:  fast.ai Part 1: Deep Learning Image Classification
-date:   2018-04-28 18:00:00
+title:  fast.ai Deep Learning Image Classification
+date:   2018-05-02 08:00:00
 categories: [DataScience, Python, DeepLearning]
 tags: [DataScience, Python, DeepLearning]
 ---
-**Here I summarise learnings from lesson 1 of the fast.ai mooc on deep learning.
+**Here I summarise learnings from lesson 1 of the fast.ai course on deep learning.
 fast.ai is a deep learning online course for coders, taught by Jeremy Howard.
 Its tag line is to "make neural nets uncool again". I started the class a couple
 of days ago and have been impressed with how fast it got me to apply the
 methods, an approach described by them as top-down learning. I am writing
 this blog post to document and reflect on the things that I learned and to help
 other people that may be interested getting started with the class.**
+
 <!--more-->
 
 The fast.ai library is a high-level library based on PyTorch, which tries to
