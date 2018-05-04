@@ -217,7 +217,18 @@ lr = np.array([1e-4,1e-3,1e-2])
 learn.fit(lr, 3, cycle_len=1, cycle_mult=2)
 ```
 
-Let's look at some of the results:
+| epoch &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | trn_loss &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | val_loss &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | accuracy |
+| - | -------- | -------- | ------- |
+| 0 | 0.475365 | 0.365881 | 0.89375 |  
+| 1 | 0.278049 | 0.177107 | 0.94375 |                  
+| 2 | 0.174708 | 0.178467 | 0.95    |                  
+| 3 | 0.120919 | 0.230777 | 0.95625 |                  
+| 4 | 0.093978 | 0.148054 | 0.95625 |                   
+| 5 | 0.081571 | 0.200582 | 0.95    |                   
+| 6 | 0.055903 | 0.198029 | 0.95    |
+
+A little bit better yet. Let's look at the confusion matrix and
+some of the misclassified images:
 
 ```python
 # get predictions and transform to class probability values
@@ -239,7 +250,7 @@ dolphin and the top 4 misclassified sharks:
 
 ![misclassified dolphin]({{ site.url }}/assets/fastai1_misclass_dolphin1.png)
 
-![misclassified sharks]({{ site.url }}/assets/fastai1_misclass_shark1.png])
+![misclassified sharks]({{ site.url }}/assets/fastai1_misclass_shark1.png)
 
 ## Discussion
 
@@ -265,6 +276,9 @@ For example, a number of dolphin pictures have people in them that are touching
 the dolphin. This is less prevalent with the shark pictures, for obvious
 reasons. As a result, the few shark pictures with human arms and hands in them
 and near the shark seem to end up with lower confidence for the shark class.
+For the only misclassified dolphin in the dataset, on the other hand, I think
+that the shark-like pose (frontal, widely opened mouth) may have played a role
+in the model mistaking this image for a shark image.
 
 This kind of data leakage is increasingly discussed and criticised in deep
 learning applications, so it is good to be aware and keep an eye out for them.
