@@ -133,7 +133,7 @@ abstractions provided by fast.ai
 Now we can finally start to train our image classifier. I am using a
 [paperspace](https://www.paperspace.com/console/machines) instance with the
 [setup](https://github.com/reshamas/fastai_deeplearn_part1/blob/master/tools/paperspace.md)
-recommended and provided by (fast.ai)[http://course.fast.ai/start.html].
+recommended and provided by [fast.ai](http://course.fast.ai/start.html).
 
 **Train a First Model**
 
@@ -169,7 +169,7 @@ learn = ConvLearner.pretrained(arch, data, precompute=True)
 
 Jeremy explained the learning rate finder that uses the approach of cyclical
 learning rates as outlined by Leslie Smith (https://arxiv.org/abs/1506.01186).
-Using the lr_find method and then plotting the learning rate against loss.
+Using the `lr_find` method and then plotting the learning rate against loss.
 We now want to visually choose the "The highest learning rate we can find where
 the loss is still clearly improving". Note here that the learning rate finder
 did initially not work so well for my small-ish dataset. I had to adjust the
@@ -250,7 +250,7 @@ dolphin and the top 4 misclassified sharks:
 
 ![misclassified dolphin]({{ site.url }}/assets/fastai1_misclass_dolphin1.png)
 
-![misclassified sharks]({{ site.url }}/assets/fastai1_misclass_shark1.png)
+![misclassified sharks]({{ site.url }}/assets/fastai1_missclass_shark1.png)
 
 ## Discussion
 
