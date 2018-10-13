@@ -64,13 +64,13 @@ the "missing package manager for MacOS"! This bit actually requires some user
 input (<yes> and <password>), so we will split that from the rest of the basic
 installations.
 
-```
+```bash
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 ```
 
 Once that is done we can use `homebrew` for some additional household essentials.
 
-```
+```bash
 brew install caskroom/cask/brew-cask
 brew tap caskroom/cask
 brew cask install
@@ -102,7 +102,7 @@ the neat extra features that we can add with a little bit of extra setup effort:
 * execution timing
 * git support with repo status tracking
 
-(powerlevel9k demo)[https://camo.githubusercontent.com/b5d7eb49a30bfe6bdb5706fa3c9be95fe8e5956e/687474703a2f2f67696679752e636f6d2f696d616765732f70396b6e65772e676966]
+![powerlevel9k demo](https://camo.githubusercontent.com/b5d7eb49a30bfe6bdb5706fa3c9be95fe8e5956e/687474703a2f2f67696679752e636f6d2f696d616765732f70396b6e65772e676966)
 
 The most nerdy set of productivity tools on the block! To make this work
 we will need [iTerm2](https://www.iterm2.com/) and [zsh](http://www.zsh.org/).
@@ -117,7 +117,7 @@ While we're at it we will also install the Powerline terminal fonts, which
 will be needed for [powerlevel9k](https://github.com/bhilburn/powerlevel9k),
 the zsh theme of my choosing.
 
-```
+```bash
 # install iTerm2
 brew cask install iterm2
 
@@ -152,7 +152,7 @@ share your preferences between different machines. You can create your own by
 exporting your profile from the profile menu to a JSON file and copying it to
 the same location:
 
-```
+```bash
 # copy the profile settings for iTerm2 to DynamicProfiles folder
 wget -O ~/Library/Application Support/iTerm2/DynamicProfiles https://github.com/JanLauGe/.dotfiles/blob/master/iterm_profile.json
 ```
@@ -165,7 +165,7 @@ a pre-existing `.zshrc` but I felt that adding lines using `sed` kept things
 more transparent and would allow for applying individual parts of the script
 to already set up machines.
 
-```
+```bash
 # Add auto suggestions (for Oh My Zsh)
 # This plugin suggests the commands you used in your terminal history.
 # You just have to type → to fill it entirely !
@@ -205,7 +205,7 @@ initial setup script as well. Moreover, I find myself accumulating eclectic
 collections of packages and libraries. Instead of reinstalling all of these
 manually I have included them here as well:
 
-```
+```bash
 #### install anaconda ----
 # May need updating for conda version
 wget -O anaconda.sh https://repo.anaconda.com/archive/Anaconda3-5.3.0-MacOSX-x86_64.sh
@@ -275,13 +275,13 @@ folder called `.dotfiles`. From there we can sync them into our home directory,
 as succinctly explained by Ajmal Siddiqui
 [in this post](https://medium.freecodecamp.org/dive-into-dotfiles-part-2-6321b4a73608).
 
-```
+```bash
 rsync .dotfiles ~
 ```
 
 and since we want to do that whenever we start a new terminal session:
 
-```
+```bash
 echo 'rsync .dotfiles ~' >> .zshrc
 ```
 
