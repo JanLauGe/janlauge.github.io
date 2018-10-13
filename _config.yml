@@ -2,7 +2,8 @@
 title: Laurens Geffert
 description: 'Data Science Portfolio'
 url: 'https://janlauge.github.io'
-baseurl: 'https://janlauge.github.io/'
+#baseurl: 'https://janlauge.github.io/'
+baseurl: ''
 google_analytics: 'UA-104096144-1'
 disqus_shortname: 'janlauge.disqus.com'
 
