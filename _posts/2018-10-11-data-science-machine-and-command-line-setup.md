@@ -102,7 +102,7 @@ the neat extra features that we can add with a little bit of extra setup effort:
 * execution timing
 * git support with repo status tracking
 
-![powerlevel9k demo](https://camo.githubusercontent.com/b5d7eb49a30bfe6bdb5706fa3c9be95fe8e5956e/687474703a2f2f67696679752e636f6d2f696d616765732f70396b6e65772e676966)
+![example powerlevel9k prompt]({{ site.url }}/assets/bashsetup_powerlevel9k.gif)
 
 The most nerdy set of productivity tools on the block! To make this work
 we will need [iTerm2](https://www.iterm2.com/) and [zsh](http://www.zsh.org/).
@@ -289,11 +289,11 @@ This will synchronise all files in the `.dotfiles` folder to the home directory
 where they are available to the various applications or our custom scripts
 that may use them. Files that I now use this for include:
 
-* .ssh - ssh keys for Github, AWS, etc.
-* .aws - AWS credentials needed for the [`aws cli`](https://aws.amazon.com/cli/)
-* .gitconfig - To track my contributions to version controlled code bases
-* .kaggle.json - Access token to use the [new Kaggle API](https://github.com/Kaggle/kaggle-api)
-* .google - Access token for the google maps SDK that I used [here](https://janlauge.github.io/2017/extracting-location-history/)
+* `.ssh` - ssh keys for Github, AWS, etc.
+* `.aws` - AWS credentials needed for the [`aws cli`](https://aws.amazon.com/cli/)
+* `.gitconfig` - To track my contributions to version controlled code bases
+* `.kaggle.json` - Access token to use the [new Kaggle API](https://github.com/Kaggle/kaggle-api)
+* `.google` - Access token for the google maps SDK that I used [here](https://janlauge.github.io/2017/extracting-location-history/)
 
 So that's all! As always, I hope it is useful for someone. Please let me know
 any thoughts you may have in the comments below. Also, follow me on
