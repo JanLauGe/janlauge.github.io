@@ -7,11 +7,13 @@ date:   2018-10-12 13:00:00
 categories: [DataScience, Tools, Coding]
 tags: [DataScience, Tools, Coding]
 ---
-**Setting up a new machine for data science work can be frustrating and time
-consuming. After having to go through this process twice quite recently, and
-with several new starters about to join my team, I decided to invest some time
-to create a step-by-step guide that helps to automate the process of machine
-setup. This gets you from zero to Data Science in minutes on MacOS**
+**Data Scientists require a very particular toolset for their everyday tasks,
+but unlike software developers, few of them spend a lot of time optimising this
+toolset for their specific needs. I compiled a simple step-by-step guide that
+helps to automate the process setting up a brand new data science machine and
+making it work for you by customising the command prompt and using a `.dotfile`
+approach to manage configuration, identity, and access information.
+This gets you from zero to Data Science in minutes on MacOS**
 
 <!--more-->
 
@@ -57,7 +59,7 @@ good luck! It may work with the new
 If you get a chance to test this, please let me know in the comment section below.
 
 
-# Initial Setup
+### Initial Setup
 
 We start of by installing install [Homebrew](https://brew.sh/),
 the "missing package manager for MacOS"! This bit actually requires some user
@@ -86,7 +88,7 @@ brew cask install java
 # (this may require your password again)
 ```
 
-# Powerlevel9k Command Line
+### Powerlevel9k Command Line
 
 Now it's time to beef up our command line. This is something that many
 software developers and engineers spend a lot of time on, to the point where
@@ -194,7 +196,7 @@ echo 'export DEFAULT_USER="$(whoami)"' >> .zshrc
 ```
 
 
-# Data Science Essentials
+### Data Science Essentials
 
 [Data science at the command line](https://www.datascienceatthecommandline.com/)
 is great, but I doubt it will be enough to do all of your day-to-day tasks.
@@ -259,7 +261,7 @@ RScript -e "install.packages(c(
 RScript -e "library(devtools); install_github('snowflakedb/dplyr-snowflakedb')"
 ```
 
-# Settings and Access
+### Settings and Access
 
 So now we are done with the basic setup on our local machine. However, there are
 still ssh keys, api access tokens, and config files to configure. This can take
