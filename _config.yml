@@ -5,8 +5,7 @@ url: 'https://janlauge.github.io'
 baseurl: 'https://janlauge.github.io/'
 # for offline build baseurl: ''
 google_analytics: 'UA-104096144-1'
-disqus:
-  shortname: 'janlauge.disqus.com'
+disqus_shortname: 'janlauge.disqus.com'
 
 author:
   name: 'Laurens Geffert'
