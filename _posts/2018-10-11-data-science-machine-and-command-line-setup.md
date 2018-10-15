@@ -11,7 +11,7 @@ tags: [DataScience, Tools, Coding]
 but unlike software developers, few of them spend a lot of time optimising this
 toolset for their specific needs. I compiled a simple step-by-step guide that
 helps to automate the process setting up a brand new data science machine and
-making it work for you by customising the command prompt and using a `.dotfile`
+making it work for you by customising the command prompt and using a dotfile 
 approach to manage configuration, identity, and access information.
 This gets you from zero to Data Science in minutes on MacOS**
 
@@ -73,19 +73,24 @@ installations.
 Once that is done we can use `homebrew` for some additional household essentials.
 
 ```bash
-brew install caskroom/cask/brew-cask
-brew tap caskroom/cask
-brew cask install
-
+# we will need these later
 brew install wget htop git keychain
 
-brew cask install google-chrome atom vlc spotify dropbox
-# You can launch and configure dropbox with
+# I like these, so I'll install them here as well
+brew cask install google-chrome atom slack vlc spotify dropbox
+# You can launch and configure apps like this
 open ~/Applications/Dropbox.app
 
-# Java SDK
+# install gcc and java,
+# a lot of the data science tools we will install later depend on them
+# (some of these may require your password again)
+brew install gcc
+
+brew tap caskroom/versions
+
 brew cask install java
-# (this may require your password again)
+brew cask install java8
+brew install jenv
 ```
 
 ### Powerlevel9k Command Line
@@ -134,13 +139,17 @@ sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/i
 git clone https://github.com/bhilburn/powerlevel9k.git ~/.oh-my-zsh/custom/themes/powerlevel9k
 # and the corresponding font
 wget -O /Library/Fonts/font_sourcecodepro_powerline_awesomeregular.ttf https://github.com/Falkor/dotfiles/blob/master/fonts/SourceCodePro+Powerline+Awesome+Regular.ttf?raw=true
-
-# change zsh theme to powerlevel9k
-sed -i '' 's/ZSH_THEME="robbyrussell"/POWERLEVEL9K_MODE='awesome-patched'\
-ZSH_THEME="powerlevel9k\/powerlevel9k"/g' .zshrc
 ```
 
-Now you should add iTerm2 to the dock bar and/or assign a hot key of your
+The oh-my-zsh installation script changes your default shell to zsh and creates
+the file `.zshrc`. Just like `.bash_profile` for bash, this file is
+automatically sourced when a new zsh session is launched. From now on you
+should always use `.zshrc` instead of `.bash_profile`, for example when setting
+a new standard conda environment. Notice that `.zshrc` comes with a lot of
+options that are commented out. Feel free to go through the file and uncomment
+the modifications that may be of interest to you.
+
+You should also add iTerm2 to the dock bar and/or assign a hot key of your
 choosing. Change the colour scheme (`Menu bar` > `Profiles` >
 `Open Profiles...` > `Select "Default"` > `Edit Profiles...`) as you see fit.
 Definitively change the font to `SourceCodePro+Powerline+Awesome Regular`.
@@ -160,23 +169,30 @@ wget -O ~/Library/Application Support/iTerm2/DynamicProfiles https://github.com/
 ```
 
 There is a wide range of plugins available for iTerm2 and zsh. I
-automatically add a few that I find useful by installing them with homebrew or
-cloning the code from github. Afterwards I add them to the `.zshrc`
-configuration file with `sed`. Side note: Alternatively, we could just copy
-a pre-existing `.zshrc` but I felt that adding lines using `sed` kept things
-more transparent and would allow for applying individual parts of the script
-to already set up machines.
+automatically add a few that I find useful by installing them with homebrew.
+Afterwards I add them to the `.zshrc` configuration file with `sed` or by
+pipe-appending (`>>`) a string to the end of the file.
+
+In case you're unfamiliar with these commands: `sed` looks for a string in a
+file using [regular expression](https://regexr.com/) and replaces the found
+string with a replacement string. The inplace flag `-i ''` is Mac specific and
+tells `sed` to overwrite the old file with the new updated version. The `>>`
+operator appends to a file or creates the file if it doesn't exist.
+
+Side note: Alternatively, we could just copy
+a pre-existing `.zshrc` but I felt that adding lines using `sed` keeps things
+more transparent and allows for more of a mix-and-match approach where you can
+choose the bits you like and leave out the ones that are not useful to you.
 
 ```bash
-# Add auto suggestions (for Oh My Zsh)
-# This plugin suggests the commands you used in your terminal history.
-# You just have to type → to fill it entirely !
-git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
-# Note: $ZSH_CUSTOM/plugins path is by default ~/.oh-my-zsh/custom/plugins
+# change zsh theme to powerlevel9k
+sed -i '' 's/ZSH_THEME="robbyrussell"/POWERLEVEL9K_MODE='awesome-patched'\
+ZSH_THEME="powerlevel9k\/powerlevel9k"/g' .zshrc
 
-brew install zsh-syntax-highlighting
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git
-echo "source ${(q-)PWD}/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" >> ${ZDOTDIR:-$HOME}/.zshrc
+# Add auto suggestions (for Oh My Zsh) suggests the commands you used
+# in your terminal history. You just have to type → to fill it entirely!
+# Note: $ZSH_CUSTOM/plugins path is by default ~/.oh-my-zsh/custom/plugins
+brew install zsh-autosuggestions zsh-syntax-highlighting
 
 # Add the plugins to the list of plugins in ~/.zshrc configuration file :
 sed -i '' '/^plugins=(/  a\
@@ -208,12 +224,11 @@ collections of packages and libraries. Instead of reinstalling all of these
 manually I have included them here as well:
 
 ```bash
-#### install anaconda ----
+#### install anaconda
 # May need updating for conda version
 wget -O anaconda.sh https://repo.anaconda.com/archive/Anaconda3-5.3.0-MacOSX-x86_64.sh
 ./anaconda.sh -b -p ~/anaconda3
 rm anaconda.sh
-
 # append conda path to bash profile
 echo 'export PATH="~/anaconda3/bin:$PATH"' >> ~/.zshrc
 # reload profile
@@ -227,36 +242,51 @@ conda create --name dev3 python=3.6
 # and switch to it to avoid using the system python
 source activate dev3
 # do this every time we start a new session
+# assuming you want to use python3 by default
 echo 'source activate dev3' >> ~/.zshrc
-
 # Install a few libraries that do not ship with anaconda
 pip install awscli tensorflow tensorflow-gpu keras
 
 
-#### install R and RStudio ----
+#### install R and RStudio
 # this is required for some advanced plotting
-brew cask install xquartz
-# (will need password again)
-
+brew cask install xquartz # (will need password again)
 brew install --with-x11 r
 brew cask install --appdir=/Applications rstudio
 # Note the --appdir option which will use /Applications instead of ~/Applications
 
-# install R packages
-RScript -e "install.packages(c(
-  'caret','cluster','crayon','crosstalk','curl','CVST','data.table','DBI',
-  'devtools','doMC','dtplyr','foreach','foreign','ggplot2','ggthemes','glmnet',
-  'haven','here','htmltools','htmlwidgets','httr','igraph','jsonlite','knitr',
-  'labeling','lattice','lazyeval','leaflet','lubridate','magrittr','markdown',
-  'mime','praise','psych','purrr','raster','RColorBrewer','Rcpp','readr',
-  'rmarkdown','rpart','rvest','scales','shiny','stringr','survival','testthat',
-  'tidyverse','units','viridis','xml2','aws.s3','checkmate','feather','future',
-  'gapminder','keras','lintr','plotly','plotROC','prettyunits','pROC','progress',
-  'randomForest','ranger','reticulate','rJava','RJDBC','RJSONIO','RODBC',
-  'roxygen2','RPostgreSQL','Rtsne','slackr','sf','stringdist','tensorflow',
-  'text2vec','vegan','xgboost','XML'),
-  repos='http://cran.us.r-project.org')"
 
+# set up rJava; this can be a pain!
+# I used these instructions: https://zhiyzuo.github.io/installation-rJava/
+# consult google if you get stuck here
+
+# set java environmental variables for the profile
+echo 'export PATH="$HOME/.jenv/bin:$PATH"' >> ~/.zshrc
+echo 'eval "$(jenv init -)"' >> ~/.zshrc
+source ~/.zshrc
+# make sure to set this to the version that you installed (`java -version`)
+jenv add /Library/Java/JavaVirtualMachines/jdk1.8.0_162.jdk/Contents/Home
+jenv global oracle64-1.8.0_162
+# prepare installation and install rJava by building from source
+R CMD javareconf
+RScript -e "install.packages('rJava',\
+  repos='http://cran.us.r-project.org',\
+  type='source')"
+
+# install R packages
+RScript -e "install.packages(c(\
+  'caret','cluster','crayon','crosstalk','curl','CVST','data.table','DBI',\
+  'devtools','doMC','dtplyr','foreach','foreign','ggplot2','ggthemes','glmnet',\
+  'haven','here','htmltools','htmlwidgets','httr','igraph','jsonlite','knitr',\
+  'labeling','lattice','lazyeval','leaflet','lubridate','magrittr','markdown',\
+  'mime','praise','psych','purrr','raster','RColorBrewer','Rcpp','readr',\
+  'rmarkdown','rpart','rvest','scales','shiny','stringr','survival','testthat',\
+  'tidyverse','units','viridis','xml2','aws.s3','checkmate','feather','future',\
+  'gapminder','keras','lintr','plotly','plotROC','prettyunits','pROC','progress',\
+  'randomForest','ranger','reticulate','rJava','RJDBC','RJSONIO','RODBC',\
+  'roxygen2','RPostgreSQL','Rtsne','slackr','sf','stringdist','tensorflow',\
+  'text2vec','vegan','xgboost','XML'),\
+  repos='http://cran.us.r-project.org')"
 # This library for snowflake from github
 RScript -e "library(devtools); install_github('snowflakedb/dplyr-snowflakedb')"
 ```
@@ -269,7 +299,7 @@ a lot of time and energy, and having different tokens on different machines
 can be confusing or even unsafe (I have seen far too many people hard-code
 their AWS credentials into their notebooks!).
 
-I've therefore gone for an approach of creating a central repository for
+I've therefore gone for an approach of creating a folder with all the files for
 identity management and protecting it with a single strong master password.
 For obvious reasons I will not go into too much detail on my exact approach to
 this, but let's just say that we have synced all our identity files to a local

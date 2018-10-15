@@ -5,7 +5,8 @@ url: 'https://janlauge.github.io'
 baseurl: 'https://janlauge.github.io/'
 # for offline build baseurl: ''
 google_analytics: 'UA-104096144-1'
-disqus_shortname: 'janlauge.disqus.com'
+disqus:
+  shortname: janlauge
 
 author:
   name: 'Laurens Geffert'
@@ -37,6 +38,7 @@ kramdown:
   input: GFM
   # do not replace newlines by <br>s
   hard_wrap: false
+  math_engine: mathjax
 
 gems: ['jekyll-paginate']
 exclude: ['README.md', 'Gemfile', 'Gemfile.lock']
