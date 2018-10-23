@@ -11,7 +11,7 @@ tags: [DataScience, Tools, Coding]
 but unlike software developers, few of them spend a lot of time optimising this
 toolset for their specific needs. I compiled a simple step-by-step guide that
 helps to automate the process setting up a brand new data science machine and
-making it work for you by customising the command prompt and using a dotfile 
+making it work for you by customising the command prompt and using a dotfile
 approach to manage configuration, identity, and access information.
 This gets you from zero to Data Science in minutes on MacOS**
 
@@ -74,7 +74,7 @@ Once that is done we can use `homebrew` for some additional household essentials
 
 ```bash
 # we will need these later
-brew install wget htop git keychain
+brew install wget htop git git-lfs libgit2 keychain
 
 # I like these, so I'll install them here as well
 brew cask install google-chrome atom slack vlc spotify dropbox
@@ -165,7 +165,7 @@ the same location:
 
 ```bash
 # copy the profile settings for iTerm2 to DynamicProfiles folder
-wget -O ~/Library/Application Support/iTerm2/DynamicProfiles https://github.com/JanLauGe/.dotfiles/blob/master/iterm_profile.json
+wget -O ~/Library/Application\ Support/iTerm2/DynamicProfiles https://github.com/JanLauGe/.dotfiles/blob/master/iterm_profile.json
 ```
 
 There is a wide range of plugins available for iTerm2 and zsh. I
@@ -227,7 +227,7 @@ manually I have included them here as well:
 #### install anaconda
 # May need updating for conda version
 wget -O anaconda.sh https://repo.anaconda.com/archive/Anaconda3-5.3.0-MacOSX-x86_64.sh
-./anaconda.sh -b -p ~/anaconda3
+bash anaconda.sh
 rm anaconda.sh
 # append conda path to bash profile
 echo 'export PATH="~/anaconda3/bin:$PATH"' >> ~/.zshrc
@@ -262,11 +262,13 @@ brew cask install --appdir=/Applications rstudio
 
 # set java environmental variables for the profile
 echo 'export PATH="$HOME/.jenv/bin:$PATH"' >> ~/.zshrc
+# (you may need to update version number here)
+echo 'export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home"' >> ~/.zshrc
 echo 'eval "$(jenv init -)"' >> ~/.zshrc
 source ~/.zshrc
 # make sure to set this to the version that you installed (`java -version`)
-jenv add /Library/Java/JavaVirtualMachines/jdk1.8.0_162.jdk/Contents/Home
-jenv global oracle64-1.8.0_162
+jenv add /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home
+jenv global oracle64-1.8.0_181
 # prepare installation and install rJava by building from source
 R CMD javareconf
 RScript -e "install.packages('rJava',\
@@ -275,21 +277,25 @@ RScript -e "install.packages('rJava',\
 
 # install R packages
 RScript -e "install.packages(c(\
-  'caret','cluster','crayon','crosstalk','curl','CVST','data.table','DBI',\
+  'cluster','crayon','crosstalk','curl','CVST','data.table','DBI',\
   'devtools','doMC','dtplyr','foreach','foreign','ggplot2','ggthemes','glmnet',\
   'haven','here','htmltools','htmlwidgets','httr','igraph','jsonlite','knitr',\
   'labeling','lattice','lazyeval','leaflet','lubridate','magrittr','markdown',\
   'mime','praise','psych','purrr','raster','RColorBrewer','Rcpp','readr',\
   'rmarkdown','rpart','rvest','scales','shiny','stringr','survival','testthat',\
-  'tidyverse','units','viridis','xml2','aws.s3','checkmate','feather','future',\
+  'units','viridis','xml2','aws.s3','checkmate','feather','future',\
   'gapminder','keras','lintr','plotly','plotROC','prettyunits','pROC','progress',\
   'randomForest','ranger','reticulate','rJava','RJDBC','RJSONIO','RODBC',\
   'roxygen2','RPostgreSQL','Rtsne','slackr','sf','stringdist','tensorflow',\
-  'text2vec','vegan','xgboost','XML'),\
+  'text2vec','vegan','xgboost','XML','tidyverse'),\
   repos='http://cran.us.r-project.org')"
-# This library for snowflake from github
+# This library for snowflake is only available on github
 RScript -e "library(devtools); install_github('snowflakedb/dplyr-snowflakedb')"
 ```
+
+Consider adding `/bin/zsh` to your RStudio global options under
+`Global Options...` > `Terminal` > `Custom shell binary` to keep your
+RStudio Terminal sessions in tune with the custom terminal we set up here.
 
 ### Settings and Access
 
