@@ -49,6 +49,7 @@ I mentioned earlier were. For this type of modelling task we need species
 occurrence data (our "label", "response", or Y) and climatic variables
 (the "predictors", or X)
 
+
 ## Species Data
 
 After browsing the web for a suitable case study species for a while i decided on
@@ -146,6 +147,9 @@ The final rasters look like this:
 
 # Modelling
 
+We'll split the data in training and test set with a true temporal holdout
+from all data collected between 2005 - 2015.
+
 ```r
 # last pre-processing step
 df_modelling <- df_nested %>%
@@ -217,10 +221,10 @@ model_fit <- train(
 plot(model_fit)
 ```
 
-We can evaluate the performance of this model on our hold-out data from 2010.
-Just as uring training we are using the Area under the Receiver Operator
-Characteristic curve (AUC). With this metric, a model no bettern than random
-would score 0.5 while a perfect model making no mistakes would score 1.
+We can evaluate the performance of this model on our hold-out data from
+2005 - 2015. Just as uring training we are using the Area under the Receiver
+Operator Characteristic curve (AUC). With this metric, a model no bettern than
+random would score 0.5 while a perfect model making no mistakes would score 1.
 
 ```r
 # combine prediction with validation set
@@ -233,6 +237,7 @@ df_eval <- data_frame(
     pull(1))
 
 # get ROC value
+library(yardstick)
 roc_auc_vec(estimator = "binary", truth = df_eval$obs, estimate = df_eval$pred)
 ```
 
@@ -240,8 +245,7 @@ Now we can combine the raw data, model performance, and predictions all in one
 nested dataframe. We can save this for later to make sure we always know what
 data was used to build which model.
 
-```{r model_prediction}
-
+```r
 df_eval <- df_modelling %>%
   group_by(decade) %>% nest() %>%
   # combine with climate data
@@ -274,57 +278,17 @@ df_eval <- df_modelling %>%
 df_eval
 ```
 
+# Conclusion
 
-<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Slowly (slooowly) prepping for gganimate release... farver has been submitted to CRAN</p>&mdash; Thomas Lin Pedersen (@thomasp85) <a href="https://twitter.com/thomasp85/status/1041622314448809986?ref_src=twsrc%5Etfw">September 17, 2018</a></blockquote>
-<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-
-Saving the data is fine but I wanted to get some flashy output for wrapping up
-this blog post. Then, with perfect timing, `gganimate` happened. Below my first
-attempt using it to animate the change in habitat suitability for the Scottish
-Crossbill over fourty decades.
-
-```{r create_animation}
-
-# remove cells with missing values in any decade
-# (otherwise mismatch causes animation glitches)
-no_na_data <- df_eval %>%
-  dplyr::select(decade, climate_data, habitat_suitability) %>%
-  # change nesting
-  unnest() %>% group_by(x, y) %>% nest() %>%
-  # find cells with missing values
-  mutate(any_na = map_lgl(
-      .x = data,
-      ~ dim(.x)[[1]] == 5)) %>%
-  # exclude them
-  filter(any_na) %>%
-  dplyr::select(x, y, data) %>%
-  unnest()
-
-# create animation cycling through decades
-hs_animation <- no_na_data %>%
-  dplyr::select(x, y, decade, habitat_suitability) %>%
-  gather(key = "variable", value = "value", -x, -y, -decade) %>%
-  filter(variable == "habitat_suitability") %>%
-  # plot data
-  ggplot(aes(x = x, y = y, fill = value)) +
-  geom_tile() +
-  # good colour palette for colour blind people
-  scale_fill_viridis(option = "A") +
-  coord_equal() +
-  theme_map() +
-  theme(legend.position = "bottom") +
-  # animate plot, morphing through decades
-  transition_states(
-    states = decade,
-    transition_length = 5,
-    state_length = 2) +
-  labs(title = 'Habitat Suitability per Decade',
-    # gganimate: animate subtitle
-    subtitle = 'Decade: {closest_state}',
-    caption = 'Source:\nGBIF data and\nMetOffice UK climate data',
-    fill = 'Habitat Suitability [0 low - high 1]')
-
-```
+Let's look at the change over time using `gganimate`. Unfortunately, we can see
+that the suitable area for the species in the UK is drastically decreasing
+after 1985. Not all species are negatively affected by climate change but many
+are. And this is just one of the many unintended consequences of our impact on
+planet earth.
 
 ![Change Animation]({{ site.url }}/assets/nesting_change_animation.png)
+
+I hope that you enjoyed this blog post despite our pessimistic findings.
+As you can see nested dataframes with list columns are immensely powerful
+in a range of situations. I will certainly use them a lot more in the future.
+Please let me know in the comments if you are, too!
