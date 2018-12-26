@@ -52,7 +52,7 @@ occurrence data (our "label", "response", or Y) and climatic variables
 
 ## Species Data
 
-After browsing the web for a suitable case study species for a while i decided on
+After browsing the web for a suitable case study species for a while I decided on
 the Scottish Crossbill (**Loxia scotica**). This is a small passerine bird that
 inhabits the Caledonian Forests of Scotland, and is the only terrestrial
 vertebrate species unique to the United Kingdom. Only ~ 20,000 individuals
@@ -66,7 +66,7 @@ easy thanks to the work of two organisations:
 
 - [the Global Biodiversity Information Facility (GBIF)](https://www.gbif.org/),
 an international network and research infrastructure funded by the world’s
-overnments and aimed at providing anyone, anywhere, open access to data about
+governments and aimed at providing anyone, anywhere, open access to data about
 all types of life on Earth. We will use their data in this project.
 
 - [rOpenSci](https://ropensci.org/), a non-profit initiative that has developed
