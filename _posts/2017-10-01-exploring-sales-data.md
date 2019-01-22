@@ -3,6 +3,7 @@ layout: post
 comments: true
 excerpt_separator: <!--more-->
 title:  Exploring Sales Data
+image: assets/sales_analysis_plot_5.jpg
 date:   2017-10-01 10:00:00
 categories: [DataScience, Recruiting, R]
 tags: [DataScience, Recruiting, R]

@@ -1,8 +1,9 @@
 # Site settings
-title: Laurens Geffert
-description: 'Data Science Portfolio'
+title: 'Laurens Geffert'
+description: 'A collection of personal Data Science projects'
 url: 'https://janlauge.github.io'
 baseurl: 'https://janlauge.github.io/'
+title_image: 'https://janlauge.github.io/images/profile.png'
 # for offline build baseurl: ''
 google_analytics: 'UA-104096144-1'
 disqus_shortname: 'janlauge.disqus.com'
