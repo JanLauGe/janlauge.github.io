@@ -58,15 +58,15 @@
   <meta name="twitter:creator" content="@{{ site.author.twitter_username }}">
   <meta name="twitter:title"   content="{{ page.title }}">
 
-  {% if post.summary %}
-  <meta name="twitter:description" content="{{ post.description }}">
+  {% if page.summary %}
+  <meta name="twitter:description" content="{{ page.description }}">
   {% else %}
   <meta name="twitter:description" content="{{ site.description }}">
   {% endif %}
 
-  {% if post.image %}
+  {% if page.image %}
   <meta name="twitter:card"  content="summary_large_image">
-  <meta name="twitter:image" content="{{ site.url }}{{ post.image }}">
+  <meta name="twitter:image" content="{{ site.url }}{{ page.image }}">
   {% else %}
   <meta name="twitter:card"  content="summary">
   <meta name="twitter:image" content="{{ site.title_image }}">
