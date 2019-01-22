@@ -4,6 +4,7 @@ comments: true
 excerpt_separator: <!--more-->
 title:  Data Science Machine and Command Line Setup
 description: How to go from zero to Data Science at the command line on a brand new Mac
+image: /assets/bashsetup_powerlevel9k.gif
 date:   2018-10-12 13:00:00
 categories: [DataScience, Tools, Coding]
 tags: [DataScience, Tools, Coding]
