@@ -14,6 +14,8 @@ R packages.**
 
 <!--more-->
 
+## Introduction
+
 An ever-increasing number of businesses is moving to the cloud and using
 platforms such as [Amazon Web Services](https://aws.amazon.com/)(AWS)
 for their data infrastructure. This is convenient for
@@ -49,27 +51,89 @@ Wickham video in which he stresses the same point:
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/cpbtcsGE0OA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
+So without further ado, let's get started implementing the bullet point list!
 
 
+// A diagram showing the Setup
 
 
+## Preparation
+
+There are a few basic requirements that need to be in place:
+1. an active AWS account.
+1. an AMI with `R`, `remoter`, `tidyverse`, and `future` installed.
+1. a working `ssh` key pair on your local machine that allows you to ssh into your ec2 instances.
+
+Detailed instructions on how to fulfil these basic requirements are beyond the
+scope of this post. You can find more information in the articles linked below.
+* [What Is Amazon EC2?](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/concepts.html)
+* [Running R on AWS](https://aws.amazon.com/blogs/big-data/running-r-on-aws/)
+* [The CloudyR project](http://cloudyr.github.io/)
 
 
-For ssh problems:
-https://help.ubuntu.com/community/SSH/OpenSSH/Keys#Troubleshooting
-[root@SERVER~#] mkdir /etc/ssh/user1
-[root@SERVER~#] cp /home/user1/.ssh/authorized_keys /etc/ssh/user1/
-[root@SERVER~#] chown -R user1:user1 /etc/ssh/user1
-[root@SERVER~#] chmod 755 /etc/ssh/user1
-[root@SERVER~#] chmod 644 /etc/ssh/user1/authorized_keys
-[root@SERVER~#] vi /etc/ssh/sshd_config
+# Setup
 
-#RSAAuthentication yes
-#PubkeyAuthentication yes
-# changed .ssh/authorized_keys to /etc/ssh/user1/authorized_keys <<<<<<<
-AuthorizedKeysFile      /etc/ssh/user1/authorized_keys
-#AuthorizedKeysCommand none
-#AuthorizedKeysCommandRunAs nobody
+Load the required packages. Also make sure your AWS access credentials are set.
+I do this using `Sys.setenv`. There is other ways but I found that this works
+best for me. We also specify the AMI ID (that's the system configuration that
+we are going to use for our instance), and the instance type (this is a good
+[overview](https://aws.amazon.com/ec2/instance-types/); I am using
+`t2.micro` because it is free). If you have any problems with this step, double-
+check that the region set in `Sys.setenv` matches the region of your AMI.
+
+```r
+library(aws.ec2)
+library(ssh)
+library(remoter)
+library(tidyverse)
+
+# set access credentials
+aws_access <- aws.signature::locate_credentials()
+Sys.setenv(
+  "AWS_ACCESS_KEY_ID" = aws_access$key,
+  "AWS_SECRET_ACCESS_KEY" = aws_access$secret,
+  "AWS_DEFAULT_REGION" = aws_access$region
+)
+
+# set parameters
+aws_ami <- "ami-06485bfe40a86470d"
+aws_describe <- describe_images(aws_ami)
+aws_type <- "t2.micro"
+```
+
+Ready for launch!
+
+```r
+ec2inst <- run_instances(
+  image = aws_ami,
+  type = aws_type)
+
+# wait for boot, then refresh description
+Sys.sleep(10)
+ec2inst <- describe_instances(ec2inst)
+
+# get IP address of the instance
+ec2inst_ip <- get_instance_public_ip(ec2inst)
+```
+
+The instance should be running and we can connect to it via ssh.
+That works, but personally I'd prefer to stay in RStudio instead of switching
+to the command line
+
+
+```r
+# CMD string to start remoter::server on instance
+r_cmd_start_remoter <-
+  "sudo Rscript -e 'remoter::server(port = 55555, showmsg = TRUE)'"
+
+# connect and execute
+plan(multicore)
+x <- future(
+  ssh_exec_wait(
+    session = con,
+    command = r_cmd_start_remoter))
+```
+
 
 
 
