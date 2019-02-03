@@ -2,6 +2,9 @@
 layout: post
 comments: true
 title: Building Our Own Open Source Supercomputer with R and AWS
+description: Part 1 of 2 demonstrating how to use cloudyr/aws.ec2, rOpenSci/ssh,
+  and remoter to launch AWS EC2 instances and connect to them directly from RStudio.
+image: /assets/aws_ssh_symbol.png
 date: 2019-02-03 18:00:00
 categories: [DataScience, MachineLearning, CloudComputing, R]
 tags: [DataScience, MachineLearning, CloudComputing, R]
