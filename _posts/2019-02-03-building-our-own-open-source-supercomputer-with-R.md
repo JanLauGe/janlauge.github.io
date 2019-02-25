@@ -19,7 +19,7 @@ open source R packages. This is post 1 out of 2.**
 ## Introduction
 
 An ever-increasing number of businesses is moving to the cloud and using
-platforms such as [Amazon Web Services](https://aws.amazon.com/)(AWS)
+platforms such as [Amazon Web Services](https://aws.amazon.com/) (AWS)
 for their data infrastructure. This is convenient for
 Data Scientists like myself because this conversion of tools means that my
 knowledge from previous jobs becomes much more applicable to a new role and
