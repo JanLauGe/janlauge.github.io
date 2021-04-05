@@ -44,7 +44,7 @@ Note that `simplifiedRawPath` and `waypointPath` aren't present for every entry.
 
 Based on the information above, I wrote a function to extract latitude-longitude data from the takeout `JSON` files. I use `jsonlite`s `flatten()` to make nested lists of consistent schema into data frames and then invoke `transmute()` along with `unnest()` and `pivot_longer()` where needed to standardize the formatting and create rows with `timestamp`, `lng`, `lat` observations (and some metadata). Observations from each part of the `JSON` get combined with `bind_rows()` to an output `df`. I'm only using the places info for now, but the same framework is easily generalizable to activities:
 
-"`r
+```r
 library(tidyverse)
 library(jsonlite)
 library(lubridate)
@@ -101,7 +101,7 @@ get_location_from_json <- function(fname, confidence_threshold=75) {
 
 Now we just loop over all `JSON` files in our takeout data folder:
 
-"`r
+```r
 library(fs)
 
 # list all files from takeout
