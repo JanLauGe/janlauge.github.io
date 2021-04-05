@@ -3,7 +3,7 @@ layout: post
 comments: true
 title: How to Summarize your Travel History in under 5 Minutes
 description: Use Google Maps location history to get a record of all your international travel quickly and conveniently.
-image: /assets/travel_history.png
+image: /assets/travel_history.jpg
 date: 2021-04-05 14:30:00
 categories: [DataScience, Coding, Tools, Python, Geospatial]
 tags: [DataScience, Coding, Tools, Python, Geospatial]
