@@ -9,7 +9,7 @@ categories: [DataScience, Coding, Tools, R, Geospatial]
 tags: [DataScience, Coding, Tools, R, Geospatial]
 excerpt_separator: <!--more-->
 ---
-**How to use your location history to compile a breakdown of all your international travel. Fast, simple, and valuable for immigration purposes or visa applications. We will use the Google Maps takeout feature and a small Python script**
+**How to use your location history to compile a breakdown of all your international travel. Fast, simple, and valuable for immigration purposes or visa applications. We will use the Google Maps takeout feature and a small R script**
 
 <!--more-->
 
